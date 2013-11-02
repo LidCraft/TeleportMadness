@@ -22,8 +22,8 @@ import org.bukkit.entity.Player;
  * @author Renlar < liddev.com >
  */
 @Entity()
-@Table(name = "mad_playerData")
-public class PlayerData implements Serializable {
+@Table(name = "mad_player")
+public class PlayerData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +36,6 @@ public class PlayerData implements Serializable {
     @NotNull
     private HashMap<String, Integer> worldLimits;
 
-    @NotNull
     @OneToMany(cascade=ALL)
     private List<Home> homes;
     

@@ -16,12 +16,12 @@ import org.bukkit.entity.Player;
  * @author Renlar < liddev.com >
  */
 @Entity
-@Table(name="mad_permissionGroup")
-public class PermissionGroup implements Serializable {
+@Table(name="mad_pGroup")
+public class PermissionGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
     
     @NotEmpty
     private String name;
@@ -32,11 +32,11 @@ public class PermissionGroup implements Serializable {
     @NotNull
     private List<String> blackList;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     

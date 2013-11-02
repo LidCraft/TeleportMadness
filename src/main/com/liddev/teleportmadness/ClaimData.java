@@ -16,15 +16,14 @@ import org.bukkit.World;
  * @author Renlar < liddev.com >
  */
 @Entity()
-@Table(name = "mad_claimData")
-public class ClaimData implements Serializable {
+@Table(name = "mad_claim")
+public class ClaimData {
     public final static int defaultPermissionLevel = 5;
 
     @Id
     private long id;
 
-    @NotNull
-    @OneToOne
+    @OneToOne(cascade=ALL)
     private PermissionGroup permissionGroup;
 
     @NotEmpty

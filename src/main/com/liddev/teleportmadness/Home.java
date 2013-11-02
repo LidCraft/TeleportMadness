@@ -22,7 +22,7 @@ import org.bukkit.World;
  */
 @Entity()
 @Table(name = "mad_home")
-public class Home implements Serializable {
+public class Home {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,8 +34,7 @@ public class Home implements Serializable {
     @NotNull
     private String type; //global, world, personal, gift
     
-    @NotNull
-    @OneToOne(cascade = ALL)
+    @OneToOne(cascade=ALL)
     private PermissionGroup permissionGroup;
 
     //TODO: implement permission support for homes or allow ownership of homes by groups of people.  Permission manager groups maybe?
@@ -166,11 +165,11 @@ public class Home implements Serializable {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
