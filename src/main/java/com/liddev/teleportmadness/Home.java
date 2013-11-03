@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -22,8 +24,8 @@ import org.bukkit.World;
  */
 @Entity()
 @Table(name = "mad_home")
-public class Home {
-    
+public class Home implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -33,43 +35,30 @@ public class Home {
 
     @NotNull
     private String type; //global, world, personal, gift
-    
-    @OneToOne(cascade=ALL)
+
+    @OneToOne
+    @JoinColumn(name="mad_home_permission_group")
     private PermissionGroup permissionGroup;
 
-    //TODO: implement permission support for homes or allow ownership of homes by groups of people.  Permission manager groups maybe?
-    //@NotNull
-    //private String permission; //permission required to teleport here. for gift and personal, default: owner  For global and world: default: all,
-
-    @Length(max = 10)
+    @Length(max = 30)
     @NotEmpty
     private String name;
-    
+
     @Length(max = 300)
-    @NotNull
     private String tpDenyMessage;
-    
+
     @Length(max = 300)
-    @NotNull
     private String tpAcceptMessage;
 
-    @NotNull
     private double x;
 
-    @NotNull
     private double y;
 
-    @NotNull
     private double z;
 
-    @NotNull
     private float pitch;
 
-    @NotNull
     private float yaw;
-    /*
-    @ManyToOne
-    private Claim claim;*/
 
     public void setType(String type) {
         this.type = type;
@@ -172,20 +161,19 @@ public class Home {
     public void setId(long id) {
         this.id = id;
     }
-    
-    
-    public void setPermissionGroup(PermissionGroup permissionGroup){
+
+    public void setPermissionGroup(PermissionGroup permissionGroup) {
         this.permissionGroup = permissionGroup;
     }
-    
-    public PermissionGroup getPermissionGroup(){
+
+    public PermissionGroup getPermissionGroup() {
         return permissionGroup;
     }
     /*public Claim getClaim(){
-        return claim;
-    }
+     return claim;
+     }
     
-    public void setClaim(Claim claim){
-        this.claim = claim;
-    }*/
+     public void setClaim(Claim claim){
+     this.claim = claim;
+     }*/
 }

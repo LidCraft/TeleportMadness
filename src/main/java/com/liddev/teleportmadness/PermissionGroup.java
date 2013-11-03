@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.bukkit.entity.Player;
 
@@ -16,21 +19,23 @@ import org.bukkit.entity.Player;
  * @author Renlar < liddev.com >
  */
 @Entity
-@Table(name="mad_pGroup")
-public class PermissionGroup {
+@Table(name = "mad_permission_group")
+public class PermissionGroup implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @NotEmpty
     private String name;
-    
-    @NotNull
-    private List<String> whiteList;
-    
-    @NotNull
-    private List<String> blackList;
+
+    @ManyToMany
+    @JoinTable(name="mad_permission_group_player_data_w")
+    private List<PlayerData> whiteList;
+
+    @ManyToMany
+    @JoinTable(name="mad_permission_group_player_data_b")
+    private List<PlayerData> blackList;
 
     public long getId() {
         return id;
@@ -39,37 +44,39 @@ public class PermissionGroup {
     public void setId(long id) {
         this.id = id;
     }
-    
-    public List<String> getWhiteList(){
+
+    public List<PlayerData> getWhiteList() {
         return whiteList;
     }
-    
-    public void setWhiteList(List<String> whiteList){
+
+    public void setWhiteList(List<PlayerData> whiteList) {
         this.whiteList = whiteList;
     }
-    
-    public List<String> getBlackList(){
+
+    public List<PlayerData> getBlackList() {
         return blackList;
     }
-    
-    public void setBlackList(List<String> blackList){
+
+    public void setBlackList(List<PlayerData> blackList) {
         this.blackList = blackList;
     }
-    
+
     public boolean isTrustedPlayer(Player player) {
         boolean trusted = false;
         for (int i = 0; i < whiteList.size(); i++) {
-            if (player.getName().equals(whiteList.get(i)))
+            if (player.getName().equals(whiteList.get(i))) {
                 trusted = true;
+            }
         }
         return trusted;
     }
-    
+
     public boolean isUntrustedPlayer(Player player) {
         boolean untrusted = false;
         for (int i = 0; i < blackList.size(); i++) {
-            if (player.getName().equals(blackList.get(i)))
+            if (player.getName().equals(blackList.get(i))) {
                 untrusted = true;
+            }
         }
         return untrusted;
     }
@@ -88,29 +95,28 @@ public class PermissionGroup {
         this.name = name;
     }
     /*public PermissionGroup() {
-        //groups = new ArrayList<>();
-    }
+     //groups = new ArrayList<>();
+     }
 
-    public void addGroup() {
+     public void addGroup() {
 
-    }*/
+     }*/
     /*public ArrayList<String> getGroups() {
-        return groups;
-    }
+     return groups;
+     }
 
-    public void setGroups(ArrayList<String> groups) {
-        this.groups = groups;
-    }*/
+     public void setGroups(ArrayList<String> groups) {
+     this.groups = groups;
+     }*/
 
     /*public boolean isTrustedGroup(String group) {
-        char level = group.charAt(0);
-        if (level == (char) this.level) {
-            return true;
-        }
-        if (groups.contains(group)) {
-            return true;
-        }
-        return false;
-    }*/
-
+     char level = group.charAt(0);
+     if (level == (char) this.level) {
+     return true;
+     }
+     if (groups.contains(group)) {
+     return true;
+     }
+     return false;
+     }*/
 }

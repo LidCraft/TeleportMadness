@@ -1,7 +1,6 @@
 package com.liddev.teleportmadness;
 
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
 import me.ryanhamshire.GriefPrevention.events.NewClaimCreated;
 import org.bukkit.event.EventHandler;

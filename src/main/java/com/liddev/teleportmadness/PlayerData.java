@@ -6,13 +6,18 @@ import com.avaje.ebean.validation.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import static javax.persistence.CascadeType.ALL;
+import java.util.Map;
+import static javax.persistence.CascadeType.PERSIST;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,24 +27,22 @@ import org.bukkit.entity.Player;
  * @author Renlar < liddev.com >
  */
 @Entity()
-@Table(name = "mad_player")
-public class PlayerData {
-
+@Table(name = "mad_player_data")
+public class PlayerData implements Serializable {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Length(max=30)
+    @Length(max = 30)
     @NotEmpty
     private String playerName;
 
-    @NotNull
     private HashMap<String, Integer> worldLimits;
 
-    @OneToMany(cascade=ALL)
+    @OneToMany(cascade = PERSIST)
+    @JoinColumn(name="mad_player_data_home")
     private List<Home> homes;
-    
-    @NotNull
+
     private int homeLimit;
 
     public void setId(long id) {
@@ -97,32 +100,32 @@ public class PlayerData {
     public void setHomeLimit(int homeLimit) {
         this.homeLimit = homeLimit;
     }
-    
-    public void setHomes(List<Home> homes){
+
+    public void setHomes(List<Home> homes) {
         this.homes = homes;
     }
-    
-    public List<Home> getHomes(){
+
+    public List<Home> getHomes() {
         return homes;
     }
-    
-    public void addHome(Home home){
+
+    public void addHome(Home home) {
         homes.add(home);
     }
-    
-    public Home getHome(String name){
+
+    public Home getHome(String name) {
         Home home = null;
-        for(Home h : homes){
-            if(h.getName().equalsIgnoreCase(name)){
+        for (Home h : homes) {
+            if (h.getName().equalsIgnoreCase(name)) {
                 home = h;
             }
         }
         return home;
     }
-    
-    public void removeHome(String name){
-        for(Home h : homes){
-            if(h.getName().equalsIgnoreCase(name)){
+
+    public void removeHome(String name) {
+        for (Home h : homes) {
+            if (h.getName().equalsIgnoreCase(name)) {
                 homes.remove(h);
             }
         }

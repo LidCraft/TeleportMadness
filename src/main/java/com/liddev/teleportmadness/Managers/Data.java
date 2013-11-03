@@ -39,9 +39,9 @@ public class Data {
         for (Player player : Bukkit.getOnlinePlayers()) {
             loadPlayer(player);
         }
-        for (World world : Bukkit.getWorlds()) {
+        /*for (World world : Bukkit.getWorlds()) {
             loadWorld(world);
-        }
+        }*/
     }
 
 
@@ -168,7 +168,7 @@ public class Data {
 
     public void saveAll() {
         savePlayers(playerDataMap);
-        saveWorlds(worldDataMap);
+        //saveWorlds(worldDataMap);
         saveClaims(claimDataList);
     }
 
