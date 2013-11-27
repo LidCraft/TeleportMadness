@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.bukkit.entity.Player;
 
 /**
@@ -29,13 +31,9 @@ public class PermissionGroup implements Serializable {
     @NotEmpty
     private String name;
 
-    @ManyToMany
-    @JoinTable(name="mad_permission_group_player_data_w")
-    private List<PlayerData> whiteList;
+    private List<Long> whiteList;
 
-    @ManyToMany
-    @JoinTable(name="mad_permission_group_player_data_b")
-    private List<PlayerData> blackList;
+    private List<Long> blackList;
 
     public long getId() {
         return id;
@@ -45,19 +43,19 @@ public class PermissionGroup implements Serializable {
         this.id = id;
     }
 
-    public List<PlayerData> getWhiteList() {
+    public List<Long> getWhiteList() {
         return whiteList;
     }
 
-    public void setWhiteList(List<PlayerData> whiteList) {
+    public void setWhiteList(List<Long> whiteList) {
         this.whiteList = whiteList;
     }
 
-    public List<PlayerData> getBlackList() {
+    public List<Long> getBlackList() {
         return blackList;
     }
 
-    public void setBlackList(List<PlayerData> blackList) {
+    public void setBlackList(List<Long> blackList) {
         this.blackList = blackList;
     }
 

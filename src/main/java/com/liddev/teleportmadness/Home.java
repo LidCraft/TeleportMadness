@@ -36,9 +36,7 @@ public class Home implements Serializable {
     @NotNull
     private String type; //global, world, personal, gift
 
-    @OneToOne
-    @JoinColumn(name="mad_home_permission_group")
-    private PermissionGroup permissionGroup;
+    private long permissionGroup;
 
     @Length(max = 30)
     @NotEmpty
@@ -162,11 +160,11 @@ public class Home implements Serializable {
         this.id = id;
     }
 
-    public void setPermissionGroup(PermissionGroup permissionGroup) {
+    public void setPermissionGroup(long permissionGroup) {
         this.permissionGroup = permissionGroup;
     }
 
-    public PermissionGroup getPermissionGroup() {
+    public long getPermissionGroup() {
         return permissionGroup;
     }
     /*public Claim getClaim(){

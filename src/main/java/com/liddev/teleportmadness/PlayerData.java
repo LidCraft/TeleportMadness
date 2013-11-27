@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -36,12 +37,11 @@ public class PlayerData implements Serializable {
     @Length(max = 30)
     @NotEmpty
     private String playerName;
+ 
+    @OneToOne
+    private Map<String, Integer> worldLimits;
 
-    private HashMap<String, Integer> worldLimits;
-
-    @OneToMany(cascade = PERSIST)
-    @JoinColumn(name="mad_player_data_home")
-    private List<Home> homes;
+    private List<Long> homes;
 
     private int homeLimit;
 
@@ -69,11 +69,11 @@ public class PlayerData implements Serializable {
         return playerName;
     }
 
-    public HashMap<String, Integer> getWorldLimits() {
+    public Map<String, Integer> getWorldLimits() {
         return worldLimits;
     }
 
-    public void setWorldLimits(HashMap<String, Integer> worldLimits) {
+    public void setWorldLimits(Map<String, Integer> worldLimits) {
         this.worldLimits = worldLimits;
     }
 
@@ -101,33 +101,15 @@ public class PlayerData implements Serializable {
         this.homeLimit = homeLimit;
     }
 
-    public void setHomes(List<Home> homes) {
+    public void setHomes(List<Long> homes) {
         this.homes = homes;
     }
 
-    public List<Home> getHomes() {
+    public List<Long> getHomes() {
         return homes;
     }
 
     public void addHome(Home home) {
-        homes.add(home);
-    }
-
-    public Home getHome(String name) {
-        Home home = null;
-        for (Home h : homes) {
-            if (h.getName().equalsIgnoreCase(name)) {
-                home = h;
-            }
-        }
-        return home;
-    }
-
-    public void removeHome(String name) {
-        for (Home h : homes) {
-            if (h.getName().equalsIgnoreCase(name)) {
-                homes.remove(h);
-            }
-        }
+        homes.add(home.getId());
     }
 }

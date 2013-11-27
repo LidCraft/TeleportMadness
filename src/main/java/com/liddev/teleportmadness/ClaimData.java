@@ -26,9 +26,7 @@ public class ClaimData implements Serializable {
     @Id
     private long id;
     
-    @OneToOne
-    @JoinColumn(name="mad_claim_data_permission_group")
-    private PermissionGroup permissionGroup;
+    private long permissionGroup;
 
     @NotEmpty
     private String worldName;
@@ -60,11 +58,11 @@ public class ClaimData implements Serializable {
         return Bukkit.getServer().getWorld(worldName);
     }
 
-    public PermissionGroup getPermissionGroup() {
+    public long getPermissionGroup() {
         return permissionGroup;
     }
 
-    public void setPermissionGroup(PermissionGroup permissionGroup) {
+    public void setPermissionGroup(long permissionGroup) {
         this.permissionGroup = permissionGroup;
     }
 
