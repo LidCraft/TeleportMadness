@@ -47,8 +47,8 @@ public class TeleportMadness extends JavaPlugin {
             return;
         }
 
-        setupDatabase();
         dataManager = new Data(this);
+        dataManager.openDatabase();
         dataManager.loadData();
 
         claimListener = new ClaimListener(this);
@@ -110,28 +110,6 @@ public class TeleportMadness extends JavaPlugin {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public List<Class<?>> getDatabaseClasses() {
-        List<Class<?>> list = new ArrayList<Class<?>>();
-        list.add(PermissionGroup.class);
-        list.add(JumpPoint.class);
-        list.add(PlayerData.class);
-        list.add(ClaimData.class);
-        return list;
-    }
-
-    private boolean setupDatabase() {
-        //constructDatabase();
-        try {
-            getDatabase().find(JumpPoint.class).findRowCount();
-        } catch (PersistenceException ex) {
-            System.out.println("Installing Database.");
-            installDDL();
-            return true;
-        }
-        return false;
     }
 
     @Override
