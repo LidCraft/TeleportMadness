@@ -29,7 +29,7 @@ public class Data {
     private HashMap<String, WorldData> worldDataMap;
     private ArrayList<ClaimData> claimDataList;
     private HashMap<String, JumpPoint> serverHomeMap;
-    private final String DB_NAME = "teleportmadness.db";
+    private final String DB_NAME = "TeleportMadness.odb";
     private ODB db = null;
 
     public Data(TeleportMadness mad) {
