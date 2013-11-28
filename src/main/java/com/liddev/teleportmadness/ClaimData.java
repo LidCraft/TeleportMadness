@@ -1,16 +1,6 @@
 package com.liddev.teleportmadness;
 
-import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
 import java.io.Serializable;
-import static javax.persistence.CascadeType.ALL;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -18,17 +8,13 @@ import org.bukkit.World;
  *
  * @author Renlar < liddev.com >
  */
-@Entity()
-@Table(name = "mad_claim_data")
 public class ClaimData implements Serializable {
     public final static int defaultPermissionLevel = 5;
 
-    @Id
     private long id;
     
-    private long permissionGroup;
+    private PermissionGroup permissionGroup;
 
-    @NotEmpty
     private String worldName;
 
     //possible values -1 no-one, 0 owner, 1 permissions trust, 2 trust, 3 container trust, 4 access trust, 5 everyone, default = 5
@@ -58,11 +44,11 @@ public class ClaimData implements Serializable {
         return Bukkit.getServer().getWorld(worldName);
     }
 
-    public long getPermissionGroup() {
+    public PermissionGroup getPermissionGroup() {
         return permissionGroup;
     }
 
-    public void setPermissionGroup(long permissionGroup) {
+    public void setPermissionGroup(PermissionGroup permissionGroup) {
         this.permissionGroup = permissionGroup;
     }
 

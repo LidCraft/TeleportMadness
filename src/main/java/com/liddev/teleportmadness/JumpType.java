@@ -4,6 +4,6 @@ package com.liddev.teleportmadness;
  *
  * @author Renlar <liddev.com>
  */
-public enum HomeType {
-    GLOBAL, WORLD, PERSONAL, GIFT;
+public enum JumpType {
+    GLOBAL, WORLD, GLOBALHOME, WORLDHOME, PERSONAL, GIFT;
 }

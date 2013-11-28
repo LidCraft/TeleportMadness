@@ -1,15 +1,7 @@
 package com.liddev.teleportmadness;
 
-import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -17,33 +9,25 @@ import org.bukkit.World;
  *
  * @author Renlar < liddev.com >
  */
-@Entity()
-@Table(name = "mad_world")
 public class WorldData implements Serializable {
 
-    @Id
     private Long id;
 
-    @NotEmpty
     private String name;
 
-    @OneToOne
     private PermissionGroup permissionGroup;
 
-    @OneToMany
-    private ArrayList<Home> homes;
+    private ArrayList<JumpPoint> homes;
     
-    @OneToOne
-    private Home defaultHome;
+    private JumpPoint defaultHome;
     
-    @NotNull
     private int defaultPlayerHomeLimit;
 
-    public Home getDefaultHome(){
+    public JumpPoint getDefaultHome(){
         return defaultHome;
     }
     
-    public void setDefaultHome(Home defaultHome){
+    public void setDefaultHome(JumpPoint defaultHome){
         this.defaultHome = defaultHome;
     }
 
@@ -79,21 +63,21 @@ public class WorldData implements Serializable {
         this.permissionGroup = permissionGroup;
     }
     
-    public void setHomes(ArrayList<Home> homes){
+    public void setHomes(ArrayList<JumpPoint> homes){
         this.homes = homes;
     }
     
-    public ArrayList<Home> getHomes(){
+    public ArrayList<JumpPoint> getHomes(){
         return homes;
     }
     
-    public void addHome(Home home){
+    public void addHome(JumpPoint home){
         homes.add(home);
     }
     
-    public Home getHome(String name){
-        Home home = null;
-        for(Home h : homes){
+    public JumpPoint getHome(String name){
+        JumpPoint home = null;
+        for(JumpPoint h : homes){
             if(h.getName().equalsIgnoreCase(name)){
                 home = h;
             }
@@ -102,7 +86,7 @@ public class WorldData implements Serializable {
     }
     
     public void removeHome(String name){
-        for(Home h : homes){
+        for(JumpPoint h : homes){
             if(h.getName().equalsIgnoreCase(name)){
                 homes.remove(h);
             }

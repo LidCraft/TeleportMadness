@@ -1,24 +1,8 @@
 package com.liddev.teleportmadness;
 
-import com.avaje.ebean.validation.Length;
-import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static javax.persistence.CascadeType.PERSIST;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -27,21 +11,15 @@ import org.bukkit.entity.Player;
  *
  * @author Renlar < liddev.com >
  */
-@Entity()
-@Table(name = "mad_player_data")
 public class PlayerData implements Serializable {
     
-    @Id
     private long id;
 
-    @Length(max = 30)
-    @NotEmpty
     private String playerName;
  
-    @OneToOne
     private Map<String, Integer> worldLimits;
 
-    private List<Long> homes;
+    private List<JumpPoint> homes;
 
     private int homeLimit;
 
@@ -101,15 +79,15 @@ public class PlayerData implements Serializable {
         this.homeLimit = homeLimit;
     }
 
-    public void setHomes(List<Long> homes) {
+    public void setHomes(List<JumpPoint> homes) {
         this.homes = homes;
     }
 
-    public List<Long> getHomes() {
+    public List<JumpPoint> getHomes() {
         return homes;
     }
 
-    public void addHome(Home home) {
-        homes.add(home.getId());
+    public void addHome(JumpPoint home) {
+        homes.add(home);
     }
 }

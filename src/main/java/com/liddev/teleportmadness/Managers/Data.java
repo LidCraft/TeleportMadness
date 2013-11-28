@@ -1,53 +1,69 @@
 package com.liddev.teleportmadness.Managers;
 
-import com.liddev.teleportmadness.ClaimData;
-import com.liddev.teleportmadness.Home;
-import com.liddev.teleportmadness.PermissionGroup;
-import com.liddev.teleportmadness.PlayerData;
-import com.liddev.teleportmadness.TeleportMadness;
-import com.liddev.teleportmadness.WorldData;
+import com.liddev.teleportmadness.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
-import javax.persistence.PersistenceException;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.neodatis.odb.ODB;
+import org.neodatis.odb.ODBFactory;
+import org.neodatis.odb.Objects;
+import org.neodatis.odb.core.query.IQuery;
+import org.neodatis.odb.core.query.criteria.Where;
+import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
 /**
  *
  * @author Renlar <liddev.com>
  */
+//TODO: Consider adding sqlibrary to support other databases.
 public class Data {
-    
+
     private TeleportMadness mad;
     private HashMap<String, PlayerData> playerDataMap;
     private HashMap<String, WorldData> worldDataMap;
     private ArrayList<ClaimData> claimDataList;
-    private HashMap<ClaimData, ArrayList<Player>> claimDataPlayerMap;
-    private HashMap<String, Home> serverHomeMap;
-    
-    public Data(TeleportMadness mad){
+    private HashMap<String, JumpPoint> serverHomeMap;
+    private final String DB_NAME = "teleportmadness.db";
+    private ODB db = null;
+
+    public Data(TeleportMadness mad) {
         this.mad = mad;
     }
-    
+
+    public void openDatabase() {
+        try {
+            // Open the database
+            db = ODBFactory.open(DB_NAME);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void closeDatabase() {
+        if (db != null) {
+            // Close the database
+            db.close();
+        }
+    }
+
     public void loadData() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             loadPlayer(player);
         }
         /*for (World world : Bukkit.getWorlds()) {
-            loadWorld(world);
-        }*/
+         loadWorld(world);
+         }*/
     }
 
-
-    
     public void savePlayer(PlayerData data) {
-        mad.getDatabase().save(data);
+        //TODO: add loging and playerdata checks.
+        db.store(data);
     }
 
     public void savePlayers(HashMap<String, PlayerData> players) {
@@ -63,20 +79,15 @@ public class Data {
         } else {
             mad.getLogger().log(Level.FINEST, "Loading data for player {0}", player);
         }
-        PlayerData data = mad.getDatabase().find(PlayerData.class).where().ieq("playerName", player.getName()).findUnique();
+        IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("name", player.getName()));
+        Objects<PlayerData> players = db.getObjects(query);
+        PlayerData data = (PlayerData) players.getFirst();
         if (data == null) {
             data = new PlayerData();
+            data.setPlayer(player);
         }
-        mad.getDatabase().save(data);
+        db.store(data);
         playerDataMap.put(player.getName(), data);
-        for (Home home : playerDataMap.get(player.getName()).getHomes()) {
-            ClaimData key = loadClaim(home.getLocation());
-            if (claimDataPlayerMap.containsKey(key)) {
-                claimDataPlayerMap.get(key).add(player);
-            } else {
-                claimDataPlayerMap.put(key, new ArrayList<Player>());
-            }
-        }
     }
 
     public void unloadPlayer(Player player) {
@@ -84,7 +95,7 @@ public class Data {
     }
 
     public void saveWorld(WorldData data) {
-        mad.getDatabase().save(data);
+        db.store(data);
     }
 
     public void saveWorlds(HashMap<String, WorldData> worlds) {
@@ -107,63 +118,58 @@ public class Data {
     }
 
     public void saveClaim(ClaimData data) {
-        mad.getDatabase().save(data);
+        db.store(data);
     }
 
     public void saveClaims(ArrayList<ClaimData> claims) {
-        mad.getDatabase().save(claims);
+        for (ClaimData claim : claims) {
+            saveClaim(claim);
+        }
     }
 
     public ClaimData loadClaim(Location location) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, null);
         ClaimData data = null;
         if (claim != null) {
-            data = mad.getDatabase().find(ClaimData.class).where().idEq(claim.getID().longValue()).findUnique();
+            IQuery query = new CriteriaQuery(ClaimData.class, Where.equal("name", claim.getID()));
+            Objects<ClaimData> claims = db.getObjects(query);
+            data = claims.getFirst();
             if (data == null) {
                 PermissionGroup group = new PermissionGroup();
                 data = new ClaimData();
-                data.setId(claim.getID().longValue());
+                data.setId(claim.getID());
                 data.setPermissionLevel(ClaimData.defaultPermissionLevel);
                 data.setWorld(claim.getGreaterBoundaryCorner().getWorld());
                 data.setPermissionGroup(group);
-                mad.getDatabase().save(data);
+                db.store(data);
             }
             claimDataList.add(data);
         }
         return data;
     }
-    
-    public HashMap<String, PlayerData> getPlayerDataMap(){
+
+    public HashMap<String, PlayerData> getPlayerDataMap() {
         return playerDataMap;
     }
-    
-    public PlayerData getPlayerData(String playerName){
+
+    public PlayerData getPlayerData(String playerName) {
         return playerDataMap.get(playerName);
     }
-    
-    public PlayerData getPlayerData(Player player){
+
+    public PlayerData getPlayerData(Player player) {
         return playerDataMap.get(player.getName());
     }
-    
-    public HashMap<String, WorldData> getWorldDataMap(){
+
+    public HashMap<String, WorldData> getWorldDataMap() {
         return worldDataMap;
     }
-    
-    public WorldData getWorldData(String worldName){
+
+    public WorldData getWorldData(String worldName) {
         return worldDataMap.get(worldName);
     }
-    
-    public WorldData getWorldData(World world){
-        return worldDataMap.get(world.getName());
-    }
 
-    public void cleanMemory() {
-        for (ClaimData d : claimDataList) {
-            if (claimDataPlayerMap.get(d).isEmpty()) {
-                claimDataList.remove(d);
-                claimDataPlayerMap.remove(d);
-            }
-        }
+    public WorldData getWorldData(World world) {
+        return worldDataMap.get(world.getName());
     }
 
     public void saveAll() {
@@ -177,7 +183,6 @@ public class Data {
         playerDataMap = null;
         worldDataMap = null;
         claimDataList = null;
-        claimDataPlayerMap = null;
         serverHomeMap = null;
     }
 

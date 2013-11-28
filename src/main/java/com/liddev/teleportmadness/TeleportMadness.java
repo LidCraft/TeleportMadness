@@ -116,7 +116,7 @@ public class TeleportMadness extends JavaPlugin {
     public List<Class<?>> getDatabaseClasses() {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(PermissionGroup.class);
-        list.add(Home.class);
+        list.add(JumpPoint.class);
         list.add(PlayerData.class);
         list.add(ClaimData.class);
         return list;
@@ -125,7 +125,7 @@ public class TeleportMadness extends JavaPlugin {
     private boolean setupDatabase() {
         //constructDatabase();
         try {
-            getDatabase().find(Home.class).findRowCount();
+            getDatabase().find(JumpPoint.class).findRowCount();
         } catch (PersistenceException ex) {
             System.out.println("Installing Database.");
             installDDL();

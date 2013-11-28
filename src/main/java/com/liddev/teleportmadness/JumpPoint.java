@@ -1,19 +1,6 @@
 package com.liddev.teleportmadness;
 
-import com.avaje.ebean.validation.Length;
-import com.avaje.ebean.validation.NotEmpty;
-import com.avaje.ebean.validation.NotNull;
 import java.io.Serializable;
-import static javax.persistence.CascadeType.ALL;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,30 +9,20 @@ import org.bukkit.World;
  *
  * @author Renlar < liddev.com >
  */
-@Entity()
-@Table(name = "mad_home")
-public class Home implements Serializable {
+public class JumpPoint implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotEmpty
     private String worldName;
 
-    @NotNull
-    private String type; //global, world, personal, gift
+    private String type; //Home: [global, world, personal, gift] Teleport: [global, world, personal, gift]
 
-    private long permissionGroup;
+    private PermissionGroup permissionGroup;
 
-    @Length(max = 30)
-    @NotEmpty
     private String name;
 
-    @Length(max = 300)
     private String tpDenyMessage;
 
-    @Length(max = 300)
     private String tpAcceptMessage;
 
     private double x;
@@ -160,11 +137,11 @@ public class Home implements Serializable {
         this.id = id;
     }
 
-    public void setPermissionGroup(long permissionGroup) {
+    public void setPermissionGroup(PermissionGroup permissionGroup) {
         this.permissionGroup = permissionGroup;
     }
 
-    public long getPermissionGroup() {
+    public PermissionGroup getPermissionGroup() {
         return permissionGroup;
     }
     /*public Claim getClaim(){
