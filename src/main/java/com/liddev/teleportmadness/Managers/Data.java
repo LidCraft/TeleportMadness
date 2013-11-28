@@ -1,6 +1,7 @@
 package com.liddev.teleportmadness.Managers;
 
 import com.liddev.teleportmadness.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -35,7 +36,7 @@ public class Data {
 
     public Data(TeleportMadness mad) {
         this.mad = mad;
-        DB_LOC = mad.getDataFolder().toString();
+        DB_LOC = mad.getDataFolder().toString() + File.separator;
         playerDataMap = new HashMap<String, PlayerData>();
         worldDataMap = new HashMap<String, WorldData>();
         claimDataList = new ArrayList<ClaimData>();

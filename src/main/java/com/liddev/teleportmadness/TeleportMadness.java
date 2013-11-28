@@ -30,7 +30,6 @@ public class TeleportMadness extends JavaPlugin {
     private ClaimListener claimListener;
     private HomeCommandManager m;
     private Data dataManager;
-    private EbeanServer ebean;
 
     public PluginDescriptionFile dsc;
 
@@ -45,6 +44,7 @@ public class TeleportMadness extends JavaPlugin {
         dataManager = new Data(this);
         dataManager.openDatabase();
         dataManager.loadData();
+//TODO: divide plugin into a module for each dependency where possible and only enable the portions which have their dependencies.
 
         claimListener = new ClaimListener(this);
         playerListener = new PlayerListener(this);
@@ -57,13 +57,13 @@ public class TeleportMadness extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "{0}: Shuting Down, Saving data!", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.INFO, "{0}: Saving data!", new Object[]{dsc.getFullName()});
         dataManager.saveAll();
-        getLogger().log(Level.FINE, "{0}: Data Save Complete, Clearing Memory.", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getFullName()});
         playerListener = null;
         dataManager.clearMemory();
-        dsc = null;
         getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getFullName()});
+        dsc = null;
     }
 
     @Override
@@ -74,14 +74,12 @@ public class TeleportMadness extends JavaPlugin {
                     return cm.run(cs, args);
                 }
             }
-            return false;
         } else if (cmnd.getName().equalsIgnoreCase("mad")) {
             for (MadCommandManager cm : MadCommandManager.values()) {
                 if (cm.isValid(args)) {
                     return cm.run(cs, args);
                 }
             }
-            return false;
         }
         return false;
     }
