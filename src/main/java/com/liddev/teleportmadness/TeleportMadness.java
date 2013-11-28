@@ -1,13 +1,9 @@
 package com.liddev.teleportmadness;
 
 import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.config.DataSourceConfig;
-import com.avaje.ebean.config.ServerConfig;
 import com.liddev.teleportmadness.Managers.Data;
 import com.liddev.teleportmadness.Managers.HomeCommandManager;
 import com.liddev.teleportmadness.Managers.MadCommandManager;
-import javax.persistence.PersistenceException;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +19,6 @@ import java.util.logging.Level;
 
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
-import org.h2.jdbcx.JdbcDataSource;
 
 /**
  *
@@ -137,30 +132,6 @@ public class TeleportMadness extends JavaPlugin {
             DDLGen.runScript(true, s.toString());
         }
     }
-
-    /*@Override
-    public EbeanServer getDatabase() {
-        return ebean;
-    }
-
-    public void constructDatabase() {
-        if (dsc.isDatabaseEnabled()) {
-            ServerConfig db = new ServerConfig();
-
-            db.setDefaultServer(false);
-            db.setRegister(false);
-            db.setClasses(getDatabaseClasses());
-            db.setName(dsc.getName());
-
-            JdbcDataSource dataSource = new JdbcDataSource();
-            dataSource.setURL("jdbc:h2:" + getDataFolder() + "\\" + "Mad" + ";DB_CLOSE_ON_EXIT=FALSE");
-            dataSource.setUser("TeleportMadness");
-            dataSource.setPassword("");
-            db.setDataSource(dataSource);
-
-            ebean = EbeanServerFactory.create(db);
-        }
-    }*/
 
     public boolean isInGroup(Player p) {
         getDatabase().find(PlayerData.class).where().ieq("playerName", p.getName());

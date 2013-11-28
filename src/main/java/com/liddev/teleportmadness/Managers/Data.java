@@ -30,16 +30,22 @@ public class Data {
     private ArrayList<ClaimData> claimDataList;
     private HashMap<String, JumpPoint> serverHomeMap;
     private final String DB_NAME = "TeleportMadness.odb";
+    private String DB_LOC;
     private ODB db = null;
 
     public Data(TeleportMadness mad) {
         this.mad = mad;
+        DB_LOC = mad.getDataFolder().toString();
+        playerDataMap = new HashMap<String, PlayerData>();
+        worldDataMap = new HashMap<String, WorldData>();
+        claimDataList = new ArrayList<ClaimData>();
+        serverHomeMap = new HashMap<String, JumpPoint>();
     }
 
     public void openDatabase() {
         try {
             // Open the database
-            db = ODBFactory.open(DB_NAME);
+            db = ODBFactory.open(DB_LOC + DB_NAME);
         } catch (Exception e) {
 
         }

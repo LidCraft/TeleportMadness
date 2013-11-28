@@ -4,7 +4,7 @@ load: POSTWORLD
 version: 0.01
 website: liddev.com
 author: Renlar
-database: true
+database: false
 description: teleportMadness home commands integrated with grief preventions and multiverse.
 depend: [Multiverse-Core, GriefPrevention]
 prefix: mad
