@@ -30,13 +30,12 @@ public class Data {
     private HashMap<String, WorldData> worldDataMap;
     private ArrayList<ClaimData> claimDataList;
     private HashMap<String, JumpPoint> serverHomeMap;
-    private final String DB_NAME = "TeleportMadness.odb";
-    private String DB_LOC;
+    private final String DB_LOC;
     private ODB db = null;
 
     public Data(TeleportMadness mad) {
         this.mad = mad;
-        DB_LOC = mad.getDataFolder().toString() + File.separator;
+        DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
         playerDataMap = new HashMap<String, PlayerData>();
         worldDataMap = new HashMap<String, WorldData>();
         claimDataList = new ArrayList<ClaimData>();
@@ -46,7 +45,7 @@ public class Data {
     public void openDatabase() {
         try {
             // Open the database
-            db = ODBFactory.open(DB_LOC + DB_NAME);
+            db = ODBFactory.open(DB_LOC);
         } catch (Exception e) {
 
         }
@@ -112,7 +111,9 @@ public class Data {
     }
 
     public void loadWorld(World world) {
-        WorldData data = mad.getDatabase().find(WorldData.class).where().ieq("worldName", world.getName()).findUnique();
+        IQuery query = new CriteriaQuery(WorldData.class, Where.equal("name", world.getName()));
+        Objects<WorldData> worlds = db.getObjects(query);
+        WorldData data = worlds.getFirst();
         if (data == null) {
             data = new WorldData();
             data.setName(world.getName());

@@ -15,7 +15,7 @@ public class JumpPoint implements Serializable {
 
     private String worldName;
 
-    private String type; //Home: [global, world, personal, gift] Teleport: [global, world, personal, gift]
+    private JumpType type;
 
     private PermissionGroup permissionGroup;
 
@@ -35,11 +35,11 @@ public class JumpPoint implements Serializable {
 
     private float yaw;
 
-    public void setType(String type) {
+    public void setType(JumpType type) {
         this.type = type;
     }
 
-    public String getType() {
+    public JumpType getType() {
         return type;
     }
 
