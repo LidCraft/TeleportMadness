@@ -1,6 +1,5 @@
 package com.liddev.teleportmadness;
 
-import com.avaje.ebean.EbeanServer;
 import com.liddev.teleportmadness.Managers.Data;
 import com.liddev.teleportmadness.Managers.HomeCommandManager;
 import com.liddev.teleportmadness.Managers.MadCommandManager;
@@ -28,13 +27,15 @@ public class TeleportMadness extends JavaPlugin {
 
     private PlayerListener playerListener;
     private ClaimListener claimListener;
-    private HomeCommandManager m;
+    private WorldListener worldListener;
     private Data dataManager;
+    public static TeleportMadness active;
 
     public PluginDescriptionFile dsc;
 
     @Override
     public void onEnable() {
+        active = this;
         dsc = getDescription();
         getLogger().log(Level.INFO, "Loading {0}.", new Object[]{dsc.getFullName()});
         if (!checkDepend()) {
@@ -48,6 +49,7 @@ public class TeleportMadness extends JavaPlugin {
 
         claimListener = new ClaimListener(this);
         playerListener = new PlayerListener(this);
+        worldListener = new WorldListener(this);
 
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(claimListener, this);
@@ -62,6 +64,12 @@ public class TeleportMadness extends JavaPlugin {
         getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getFullName()});
         playerListener = null;
         dataManager.clearMemory();
+        dataManager = null;
+        claimListener = null;
+        playerListener = null;
+        worldListener = null;
+        active = null;
+        
         getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getFullName()});
         dsc = null;
     }

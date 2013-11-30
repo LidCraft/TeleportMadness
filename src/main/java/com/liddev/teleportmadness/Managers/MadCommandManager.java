@@ -1,7 +1,8 @@
 package com.liddev.teleportmadness.Managers;
 
+import com.liddev.teleportmadness.CommandEnum;
 import com.liddev.teleportmadness.Commands.Home;
-import com.liddev.teleportmadness.Commands.MadCommand;
+import com.liddev.teleportmadness.MadCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,10 +25,10 @@ public enum MadCommandManager implements CommandEnum, MadCommand{
     HOME(HomeCommandManager.class, true, null, 0, -1, "h", "home"),;
         
     private MadCommand command;
-    private int min, max;
-    private String permission;
-    private boolean console;
-    private ArrayList<String> aliases;
+    private final int min, max;
+    private final String permission;
+    private final boolean console;
+    private final ArrayList<String> aliases;
 
     MadCommandManager(Class<?> cClass, boolean console, String permission, int minArgs, int maxArgs, String... aliases) {
         try {
@@ -131,7 +132,7 @@ public enum MadCommandManager implements CommandEnum, MadCommand{
     }
 
     public void notPlayer(CommandSender sender) {
-        sender.sendMessage("This is not the command you are looking for.");
+        sender.sendMessage("Oh great overlord, you can not access that command.");
     }
 
     public static String[] reduceArgs(String[] args) {

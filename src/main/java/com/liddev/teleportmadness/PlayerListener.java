@@ -15,25 +15,25 @@ import org.bukkit.event.player.PlayerQuitEvent;
 class PlayerListener implements Listener{
 
     TeleportMadness plugin;
-    PlayerListener(TeleportMadness aThis) {
+    public PlayerListener(TeleportMadness aThis) {
         plugin = aThis;
     }
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(PlayerJoinEvent event) {
-        plugin.getLogger().log(Level.INFO, "Player {0} joined, registering...", event.getPlayer().getName());
+        plugin.getLogger().log(Level.FINEST, "Player {0} joined, registering...", event.getPlayer().getName());
         plugin.getDataManager().loadPlayer(event.getPlayer());
     }
     
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerKick(PlayerKickEvent event) {
-        plugin.getLogger().log(Level.INFO, "Player {0} was kicked, unloading player data...", event.getPlayer().getName());
+        plugin.getLogger().log(Level.FINEST, "Player {0} was kicked, unloading player data...", event.getPlayer().getName());
         plugin.getDataManager().unloadPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        plugin.getLogger().log(Level.INFO, "Player {0} quit, unloading player data...", event.getPlayer().getName());
+        plugin.getLogger().log(Level.FINEST, "Player {0} quit, unloading player data...", event.getPlayer().getName());
         plugin.getDataManager().unloadPlayer(event.getPlayer());
     }
 }

@@ -1,5 +1,7 @@
 package com.liddev.teleportmadness.Managers;
 
+import com.liddev.teleportmadness.MadCommand;
+import com.liddev.teleportmadness.CommandEnum;
 import com.liddev.teleportmadness.Commands.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,12 +23,12 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
     HOMESETOTHER(HomeSet.class, false, "teleportMadness.home.set.other", 2, 2, "set", "add", "+"),
     HOMEREMOVE(HomeRemove.class, false, "teleportMadness.home.set", 1, 1, "remove", "rm", "-"),
     HOMEREMOVEOTHER(HomeRemove.class, true, "teleportMadness.home.set", 2, 2, "remove", "rm", "-"),
-    HOMEDEFAULTSET(HomeDefault.class, false, "teleportMadness.home.default.set", 1, 1, "default set", "d s"),
-    HOMEDEFAULTREMOVE(HomeDefault.class, false, "teleportMadness.home.default.remove", 0, 0, "default remove", "d r"),
+    HOMEDEFAULTSET(HomeDefaultSet.class, false, "teleportMadness.home.default.set", 1, 1, "default set", "d s"),
+    HOMEDEFAULTREMOVE(HomeDefaultRemove.class, false, "teleportMadness.home.default.remove", 0, 0, "default remove", "d r"),
     HOMELIST(HomeList.class, false, "teleportMadness.home.set", 0, 0, "list", "l", "ls"),
     HOMELISTOTHER(HomeList.class, true, "teleportMadness.home.set", 1, 1, "list", "l", "ls"),
-    HOMEINVITE(HomeInvite.class, false, "teleportMadness.home.invite", 2, 2, "invite", "i", "inv"),
-    HOMEACCEPT(HomeInvite.class, false, "teleportMadness.home.accept", 1, 1, "accept", "a", "acp"),
+    HOMEINVITE(HomeInvite.class, false, "teleportMadness.home.invite", 1, 2, "invite", "i", "inv"),
+    HOMEACCEPT(HomeAccept.class, false, "teleportMadness.home.accept", 1, 1, "accept", "a", "acp"),
     HOMESHOW(HomeShow.class, false, "teleportMadness.home.show", 0, 0, "show", "view"),
     HOMESHOWOTHER(HomeShow.class, false, "teleportMadness.home.show.other", 1, 1, "show", "view"),
     //TODO: deal with bypass permissions.
@@ -40,17 +42,18 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
     HOMESERVER(HomeServerCommandManager.class, true, null, 0, -1, "server", "s"),
     HOMEWORlD(HomeWorldCommandManager.class, true, null, 0, -1, "world", "w"),
     HOME(Home.class, false, "teleportMadness.home", 0, 1),
-    HOMEOTHER(Home.class, false, "teleportMadness.home.other", 2, 2), //HOMEGROUPLIMIT(),
+    HOMEOTHER(Home.class, false, "teleportMadness.home.other", 2, 2),
+    //HOMEGROUPLIMIT(),
     //HOMEWORLDINFO(),
     //HOMEINFOPLAYER(),
     //HOMEINFO()
     ;
 
     private MadCommand command;
-    private int min, max;
-    private String permission;
-    private boolean console;
-    private ArrayList<String> aliases;
+    private final int min, max;
+    private final String permission;
+    private final boolean console;
+    private final ArrayList<String> aliases;
 
     HomeCommandManager(Class<?> cClass, boolean console, String permission, int minArgs, int maxArgs, String... aliases) {
         try {
@@ -154,7 +157,7 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
     }
 
     public void notPlayer(CommandSender sender) {
-        sender.sendMessage("This is not the command you are looking for.");
+        sender.sendMessage("Oh great overlord, you can not access that command.");
     }
 
     public static String[] reduceArgs(String[] args) {

@@ -6,7 +6,7 @@
 
 package com.liddev.teleportmadness.Commands;
 
-import com.liddev.teleportmadness.Commands.MadCommand;
+import com.liddev.teleportmadness.MadCommand;
 import org.bukkit.command.CommandSender;
 
 /**

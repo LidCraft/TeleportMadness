@@ -1,5 +1,6 @@
 package com.liddev.teleportmadness.Commands;
 
+import com.liddev.teleportmadness.MadCommand;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -14,3 +15,4 @@ public class HomeRemove implements MadCommand{
     }
     
 }
+//TODO: continue from here.

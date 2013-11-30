@@ -1,25 +1,24 @@
 package com.liddev.teleportmadness;
 
+import com.liddev.teleportmadness.Managers.Data;
 import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 /**
  *
  * @author Renlar < liddev.com >
  */
 public class ClaimData implements Serializable {
-    public final static int defaultPermissionLevel = 5;
-
     private long id;
     
     private PermissionGroup permissionGroup;
 
     private String worldName;
 
-    //possible values -1 no-one, 0 owner, 1 permissions trust, 2 trust, 3 container trust, 4 access trust, 5 everyone, default = 5
-    private int permissionLevel; //TODO: use grief prevention permissions instead of an integer equivalence.
-    
+    //possible values 0 owner, 1 permissions trust, 2 trust, 3 container trust, 4 access trust, 5 everyone, default = 5
+    private PermissionLevel permissionLevel;     
     public void setId(long id) {
         this.id = id;
     }
@@ -52,16 +51,19 @@ public class ClaimData implements Serializable {
         this.permissionGroup = permissionGroup;
     }
 
-    public int getPermissionLevel() {
+    public PermissionLevel getPermissionLevel() {
         return permissionLevel;
     }
 
-    public void setPermissionLevel(int level) {
-        if (level < -1) {
-            level = -1;
-        } else if (level > 5) {
-            level = 5;
-        }
+    public void setPermissionLevel(PermissionLevel level) {
         this.permissionLevel = level;
+    }
+    
+    public boolean isClaimManager(Player p){
+        return Data.get().getClaim(id).isManager(p.getName());
+    }
+    
+    public Player getClaimOwner(){
+        return Bukkit.getPlayer(Data.get().getClaim(id).getOwnerName());
     }
 }

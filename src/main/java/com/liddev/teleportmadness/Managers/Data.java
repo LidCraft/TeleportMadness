@@ -4,6 +4,7 @@ import com.liddev.teleportmadness.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -28,18 +29,19 @@ public class Data {
     private TeleportMadness mad;
     private HashMap<String, PlayerData> playerDataMap;
     private HashMap<String, WorldData> worldDataMap;
-    private ArrayList<ClaimData> claimDataList;
-    private HashMap<String, JumpPoint> serverHomeMap;
+    private List<ClaimData> claimDataList;
+    private JumpPoint serverHome;
     private final String DB_LOC;
     private ODB db = null;
+    private static Data d;
 
     public Data(TeleportMadness mad) {
         this.mad = mad;
+        d = this;
         DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
         playerDataMap = new HashMap<String, PlayerData>();
         worldDataMap = new HashMap<String, WorldData>();
         claimDataList = new ArrayList<ClaimData>();
-        serverHomeMap = new HashMap<String, JumpPoint>();
     }
 
     public void openDatabase() {
@@ -47,7 +49,7 @@ public class Data {
             // Open the database
             db = ODBFactory.open(DB_LOC);
         } catch (Exception e) {
-
+            mad.getLogger().log(Level.SEVERE, "{0} Error opening Database: {1}", new Object[]{mad.dsc.getFullName(), e});
         }
     }
 
@@ -62,9 +64,10 @@ public class Data {
         for (Player player : Bukkit.getOnlinePlayers()) {
             loadPlayer(player);
         }
-        /*for (World world : Bukkit.getWorlds()) {
-         loadWorld(world);
-         }*/
+        loadServerJumps();
+        for(World world : Bukkit.getWorlds()){
+            loadWorld(world);
+        }
     }
 
     public void savePlayer(PlayerData data) {
@@ -125,11 +128,25 @@ public class Data {
         worldDataMap.remove(world.getName());
     }
 
+    public void loadServerJumps() {
+        IQuery query = new CriteriaQuery(JumpPoint.class, Where.equal("type", JumpType.GLOBAL));
+        Objects<JumpPoint> points = db.getObjects(query);
+        serverHome = points.getFirst();
+    }
+    
+    public JumpPoint getServerHome(){
+        return serverHome;
+    }
+    
+    public void setServerHome(JumpPoint home){
+        serverHome = home;
+    }
+
     public void saveClaim(ClaimData data) {
         db.store(data);
     }
 
-    public void saveClaims(ArrayList<ClaimData> claims) {
+    public void saveClaims(List<ClaimData> claims) {
         for (ClaimData claim : claims) {
             saveClaim(claim);
         }
@@ -137,22 +154,32 @@ public class Data {
 
     public ClaimData loadClaim(Location location) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, null);
-        ClaimData data = null;
         if (claim != null) {
-            IQuery query = new CriteriaQuery(ClaimData.class, Where.equal("name", claim.getID()));
-            Objects<ClaimData> claims = db.getObjects(query);
-            data = claims.getFirst();
-            if (data == null) {
-                PermissionGroup group = new PermissionGroup();
-                data = new ClaimData();
-                data.setId(claim.getID());
-                data.setPermissionLevel(ClaimData.defaultPermissionLevel);
-                data.setWorld(claim.getGreaterBoundaryCorner().getWorld());
-                data.setPermissionGroup(group);
-                db.store(data);
-            }
-            claimDataList.add(data);
+            return loadClaimData(claim);
         }
+        return null;
+    }
+
+    public ClaimData loadClaimData(Claim claim) {
+        for(ClaimData cd : claimDataList){
+            if(cd.getId() == claim.getID()){
+                return cd;
+            }
+        }
+        ClaimData data = null;
+        IQuery query = new CriteriaQuery(ClaimData.class, Where.equal("id", claim.getID()));
+        Objects<ClaimData> claims = db.getObjects(query);
+        data = claims.getFirst();
+        if (data == null) {
+            PermissionGroup group = new PermissionGroup();
+            data = new ClaimData();
+            data.setId(claim.getID());
+            data.setPermissionLevel(PermissionLevel.defaultLevel);
+            data.setWorld(claim.getGreaterBoundaryCorner().getWorld());
+            data.setPermissionGroup(group);
+            db.store(data);
+        }
+        claimDataList.add(data);
         return data;
     }
 
@@ -166,6 +193,34 @@ public class Data {
 
     public PlayerData getPlayerData(Player player) {
         return playerDataMap.get(player.getName());
+    }
+    
+    public ClaimData getClaimData(long id){
+        Claim claim = getClaim(id);
+        for(ClaimData data : claimDataList){
+            if(data.getId() == claim.getID()){
+                return data;
+            }
+        }
+        return null;
+    }
+    
+    public ClaimData getClaimData(Location l){
+        Claim claim = getClaim(l);
+        for(ClaimData data : claimDataList){
+            if(data.getId() == claim.getID()){
+                return data;
+            }
+        }
+        return null;
+    }
+    
+    public Claim getClaim(Location l){
+        return GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
+    }
+    
+    public Claim getClaim(long id){
+        return GriefPrevention.instance.dataStore.getClaim(id);
     }
 
     public HashMap<String, WorldData> getWorldDataMap() {
@@ -182,7 +237,7 @@ public class Data {
 
     public void saveAll() {
         savePlayers(playerDataMap);
-        //saveWorlds(worldDataMap);
+        saveWorlds(worldDataMap);
         saveClaims(claimDataList);
     }
 
@@ -191,18 +246,39 @@ public class Data {
         playerDataMap = null;
         worldDataMap = null;
         claimDataList = null;
-        serverHomeMap = null;
+        serverHome = null;
     }
 
     public void createClaim(Claim claim) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Player p : mad.getServer().getOnlinePlayers()) {
+            for (JumpPoint j : playerDataMap.get(p.getName()).getHomes()) {
+                if (claim.contains(j.getLocation(), true, true)) {
+                    loadClaimData(claim);
+                    return;
+                }
+            }
+        }
     }
 
     public void deleteClaim(Claim claim) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (ClaimData d : claimDataList) {
+            if (d.getId() == claim.getID()) {
+                db.delete(d);
+                claimDataList.remove(d);
+                break;
+            }
+        }
     }
 
-    public void updateClaim(Claim newClaim) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateClaim(Claim claim) {
+        //TODO: deal with events on claim update
+    }
+
+    public void modifyClaim(Claim claim) {
+        //TODO: deal with events on claim modification
+    }
+    
+    public static Data get(){
+        return d;
     }
 }

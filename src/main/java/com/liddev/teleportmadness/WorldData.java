@@ -17,18 +17,18 @@ public class WorldData implements Serializable {
 
     private PermissionGroup permissionGroup;
 
-    private ArrayList<JumpPoint> homes;
+    private ArrayList<JumpPoint> jumpPoints;
     
-    private JumpPoint defaultHome;
+    private JumpPoint worldHome;
     
     private int defaultPlayerHomeLimit;
 
-    public JumpPoint getDefaultHome(){
-        return defaultHome;
+    public JumpPoint getHome(){
+        return worldHome;
     }
     
-    public void setDefaultHome(JumpPoint defaultHome){
-        this.defaultHome = defaultHome;
+    public void setHome(JumpPoint defaultHome){
+        this.worldHome = defaultHome;
     }
 
     public Long getId() {
@@ -63,21 +63,21 @@ public class WorldData implements Serializable {
         this.permissionGroup = permissionGroup;
     }
     
-    public void setHomes(ArrayList<JumpPoint> homes){
-        this.homes = homes;
+    public void setJumpPoints(ArrayList<JumpPoint> jumpPoints){
+        this.jumpPoints = jumpPoints;
     }
     
-    public ArrayList<JumpPoint> getHomes(){
-        return homes;
+    public ArrayList<JumpPoint> getJumpPoints(){
+        return jumpPoints;
     }
     
-    public void addHome(JumpPoint home){
-        homes.add(home);
+    public void addJumpPoint(JumpPoint home){
+        jumpPoints.add(home);
     }
     
-    public JumpPoint getHome(String name){
+    public JumpPoint getJumpPoint(String name){
         JumpPoint home = null;
-        for(JumpPoint h : homes){
+        for(JumpPoint h : jumpPoints){
             if(h.getName().equalsIgnoreCase(name)){
                 home = h;
             }
@@ -85,10 +85,10 @@ public class WorldData implements Serializable {
         return home;
     }
     
-    public void removeHome(String name){
-        for(JumpPoint h : homes){
+    public void removeJumpPoint(String name){
+        for(JumpPoint h : jumpPoints){
             if(h.getName().equalsIgnoreCase(name)){
-                homes.remove(h);
+                jumpPoints.remove(h);
             }
         }
     }

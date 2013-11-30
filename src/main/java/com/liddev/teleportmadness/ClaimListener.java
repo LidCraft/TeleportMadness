@@ -3,6 +3,7 @@ package com.liddev.teleportmadness;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
 import me.ryanhamshire.GriefPrevention.events.NewClaimCreated;
+import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -32,5 +33,10 @@ public class ClaimListener implements Listener{
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClaimDelete(ClaimDeletedEvent event){
         plugin.getDataManager().deleteClaim(event.getClaim());
+    }
+    
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onClaimModified(ClaimModifiedEvent event){
+        plugin.getDataManager().modifyClaim(event.getClaim());
     }
 }

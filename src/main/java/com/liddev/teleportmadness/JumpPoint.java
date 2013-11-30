@@ -144,6 +144,11 @@ public class JumpPoint implements Serializable {
     public PermissionGroup getPermissionGroup() {
         return permissionGroup;
     }
+    
+    @Override
+    public String toString(){
+        return name + ": W: " + worldName + " X: " + x + " Y: " + y + " Z: " + z;
+    }
     /*public Claim getClaim(){
      return claim;
      }

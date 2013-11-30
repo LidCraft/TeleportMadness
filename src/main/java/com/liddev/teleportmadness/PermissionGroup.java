@@ -17,7 +17,7 @@ public class PermissionGroup implements Serializable {
     private List<Long> whiteList;
 
     private List<Long> blackList;
-
+    
     public long getId() {
         return id;
     }

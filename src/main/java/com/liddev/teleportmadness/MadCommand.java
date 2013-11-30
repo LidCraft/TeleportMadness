@@ -1,4 +1,4 @@
-package com.liddev.teleportmadness.Commands;
+package com.liddev.teleportmadness;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -1,5 +1,7 @@
 package com.liddev.teleportmadness.Managers;
 
+import com.liddev.teleportmadness.MadCommand;
+import com.liddev.teleportmadness.CommandEnum;
 import com.liddev.teleportmadness.Commands.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,22 +19,18 @@ import org.bukkit.entity.Player;
 public enum HomeServerCommandManager implements CommandEnum, MadCommand {
 
     HOMESERVERSET(ServerSet.class, false,"teleportMadness.home.server.set", 1, 1, "set"),
-    HOMESERVERDEFAULTSET(ServerDefault.class, true, "teleportMadness.home.server.default.set", 1, 1, "default set"),
-    HOMESERVERDEFAULTREMOVE(ServerDefault.class, true, "teleportMadness.home.server.defalt.remove", 0, 0,"default remove"),
     HOMESERVERREMOVE(ServerRemove.class, true, "teleportMadness.home.server.remove", 1, 1, "remove"),
-    HOMESERVERLIST(ServerList.class, true, "teleportMadness.home.server.list", 0, 0, "list"),
     HOMESERVERLIMIT(ServerLimit.class, true, "teleportMadness.home.server.limit", 0, 0, "limit"),
-    HOMESERVERLIMITSET(ServerLimit.class, true, "teleportMadness.home.server.limit.set", 1, 1, "limit"),
-    HOMESERVERLIMITPLAYER(ServerLimitPlayer.class, true, "teleportMadness.home.server.limit.player", 1, 1, "limit player"),
-    HOMESERVERLIMITSETPLAYER(ServerLimitPlayer.class, true, "teleportMadness.home.server.limit.player.set", 2, 2, "limit player"),
-    HOMESERVERDEFAULT(ServerHome.class, false, "teleportMadness.home.server.default", 0, 0),
-    HOMESERVER(ServerHome.class, false, "teleportMadness.home.server", 1, 1);
+    HOMESERVERLIMITSET(ServerLimit.class, true, "teleportMadness.home.server.limit.set", 1, 1, "limit set"),
+    HOMESERVERLIMITPLAYER(ServerLimitPlayer.class, true, "teleportMadness.home.server.limit.player", 1, 1, "limit"),
+    HOMESERVERLIMITSETPLAYER(ServerLimitPlayer.class, true, "teleportMadness.home.server.limit.player.set", 2, 2, "limit set"),
+    HOMESERVER(ServerHome.class, false, "teleportMadness.home.server", 0, 0);
    
     private MadCommand command;
-    private int min, max;
-    private String permission;
-    private boolean console;
-    private ArrayList<String> aliases;
+    private final int min, max;
+    private final String permission;
+    private final boolean console;
+    private final ArrayList<String> aliases;
 
     HomeServerCommandManager(Class<?> cClass, boolean console, String permission, int minArgs, int maxArgs, String... aliases) {
         try {
@@ -137,6 +135,6 @@ public enum HomeServerCommandManager implements CommandEnum, MadCommand {
     }
 
     public void notPlayer(CommandSender sender) {
-        sender.sendMessage("This is not the command you are looking for.");
+        sender.sendMessage("Oh great overlord, you can not access that command.");
     }
 }

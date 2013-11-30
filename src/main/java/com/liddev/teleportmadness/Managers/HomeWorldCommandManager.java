@@ -1,5 +1,7 @@
 package com.liddev.teleportmadness.Managers;
 
+import com.liddev.teleportmadness.MadCommand;
+import com.liddev.teleportmadness.CommandEnum;
 import com.liddev.teleportmadness.Commands.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,10 +18,7 @@ import org.bukkit.entity.Player;
  */
 public enum HomeWorldCommandManager implements CommandEnum, MadCommand {
 
-    HOMEWORLDDEFAULT(World.class, false, "teleportMadness.home.world.default", 0,0),
-    HOMEWORLD(World.class, false, "teleportMadness.home.world", 1, 1),
-    HOMEWORLDLIST(WorldList.class, false, "teleportMadness.home.world.list", 0, 0, "ls", "list"),
-    HOMEWORLDLISTOTHER(WorldList.class, true, "teleportMadness.home.world.list.other", 1, 1, "ls", "list"),
+    HOMEWORLDDEFAULT(WorldHome.class, false, "teleportMadness.home.world", 0,0),
     HOMEWORLDSET(WorldSet.class, false, "teleportMadness.home.world.set", 1, 1, "+", "add", "set"),
     HOMEWORLDREMOVE(WorldRemove.class, false, "teleportMadness.home.world.remove", 1, 1, "rm", "-", "remove"),
     HOMEWORLDALLOW(WorldAllow.class, false, "teleportMadness.home.world.allow", 1, 1, "al", "allow"),
@@ -27,21 +26,19 @@ public enum HomeWorldCommandManager implements CommandEnum, MadCommand {
     HOMEWORLDTRUSTED(WorldTrusted.class, false, "teleportMadness.home.world.trusted", 0, 0, "t", "trusted"),
     HOMEWORLDTRUST(WorldTrust.class, false, "teleportMadness.home.world.trust", 1, 1, "tr", "trust"),
     HOEWORLDUNTRUST(WorldUntrust.class, false, "teleportMadness.home.world.untrust", 1, 1, "ut", "untrust"),
-    HOMEWORLDDEFAULTSET(WorldDefault.class, true, "teleportMadness.home.world.default.set", 1, 1, "default set"),
-    HOMEWORLDDEFAULTREMOVE(WorldDefault.class, true, "teleportMadness.home.world.default.remove", 0, 0, "default remove"),
     HOMEWORLDLIMIT(WorldLimit.class, false, "teleportMadness.home.world.limit", 0, 0, "limit"),
     HOMEWORLDLIMITOTHER(WorldLimit.class, true, "teleportMadness.home.world.limit.other", 1, 1, "limit"),
-    HOMEWORLDLIMITSET(WorldLimit.class, true, "teleportMadness.home.world.limit.set", 2, 2, "limit"),
-    HOMEWORLDLIMITSETPLAYER(WorldLimitPlayer.class, true, "teleportMadness.home.world.limit.set.player", 3, 3, "limit player"),
+    HOMEWORLDLIMITSET(WorldLimit.class, true, "teleportMadness.home.world.limit.set", 1, 2, "limit set"),
     HOMEWORLDLIMITPLAYER(WorldLimitPlayer.class, true, "teleportMadness.home.world.limit.player", 1, 2,"limit player"),
+    HOMEWORLDLIMITSETPLAYER(WorldLimitPlayer.class, true, "teleportMadness.home.world.limit.player.set", 2, 3, "limit player set"),
     HOMEWORLDSHOW(WorldShow.class, false, "teleportMadness.home.world.show", 0, 0, "show", "view");
     
     
     private MadCommand command;
-    private int min, max;
-    private String permission;
-    private boolean console;
-    private ArrayList<String> aliases;
+    private final int min, max;
+    private final String permission;
+    private final boolean console;
+    private final ArrayList<String> aliases;
 
     HomeWorldCommandManager(Class<?> cClass, boolean console, String permission, int minArgs, int maxArgs, String... aliases) {
         try {
@@ -146,7 +143,7 @@ public enum HomeWorldCommandManager implements CommandEnum, MadCommand {
     }
 
     public void notPlayer(CommandSender sender) {
-        sender.sendMessage("This is not the command you are looking for.");
+        sender.sendMessage("Oh great overlord, you can not access that command.");
     }
 
 }

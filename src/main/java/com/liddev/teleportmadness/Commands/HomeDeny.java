@@ -1,6 +1,6 @@
 package com.liddev.teleportmadness.Commands;
 
-import com.liddev.teleportmadness.Commands.MadCommand;
+import com.liddev.teleportmadness.MadCommand;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -11,7 +11,8 @@ public class HomeDeny implements MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sender.sendMessage("This is not the command you are looking for.");  //TODO: decide what to do with home deny command;
+        return true;
     }
     
 }
