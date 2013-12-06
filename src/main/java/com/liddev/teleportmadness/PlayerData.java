@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,9 +20,9 @@ public class PlayerData implements Serializable {
     
     private long id;
 
-    private String playerName;
+    private UUID playerUUID;
  
-    private Map<String, Integer> worldLimits;
+    private Map<UUID, Integer> worldLimits;
     
     private JumpPoint defaultHome;
     
@@ -40,30 +41,30 @@ public class PlayerData implements Serializable {
     }
 
     public Player getPlayer() {
-        return Bukkit.getServer().getPlayer(playerName);
+        return Bukkit.getServer().getPlayer(playerUUID);
     }
 
     public void setPlayer(Player player) {
-        this.playerName = player.getName();
+        this.playerUUID = player.getUniqueId();
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayerUUID(UUID playerUUID) {
+        this.playerUUID = playerUUID;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public UUID getPlayerUUID() {
+        return playerUUID;
     }
 
-    public Map<String, Integer> getWorldLimits() {
+    public Map<UUID, Integer> getWorldLimits() {
         return worldLimits;
     }
 
-    public void setWorldLimits(Map<String, Integer> worldLimits) {
+    public void setWorldLimits(Map<UUID, Integer> worldLimits) {
         this.worldLimits = worldLimits;
     }
 
-    public void setWorldLimit(String world, Integer limit) {
+    public void setWorldLimit(UUID world, Integer limit) {
         worldLimits.put(world, limit);
     }
 
@@ -72,7 +73,7 @@ public class PlayerData implements Serializable {
     }
 
     public int getWorldLimit(World world) {
-        return worldLimits.get(world.getName());
+        return worldLimits.get(world.getUID());
     }
 
     public boolean isPrivateAllowed() {
@@ -122,10 +123,19 @@ public class PlayerData implements Serializable {
     public JumpPoint getDefaultHome() {
         return defaultHome;
     }
+
+    public Invite getInvite(String playerName) {
+        for (Invite i : invites) {
+            if (i.getInvitee().getPlayer().getName().equals(playerName)) {
+                return i;
+            }
+        }
+        return null;
+    }
     
-    public Invite getInvite(String player){
+    public Invite getInvite(UUID player){
         for(Invite i : invites){
-            if(i.getInvitee().getPlayer().getName().equals(player)){
+            if(i.getInvitee().getPlayer().getUniqueId().equals(player)){
                 return i;
             }
         }
@@ -141,9 +151,15 @@ public class PlayerData implements Serializable {
     }
     
     public void removeInvite(PlayerData inviter){
-        removeInvite(inviter.getPlayerName());
+        removeInvite(inviter.getPlayerUUID());
     }
-    public void removeInvite(String player){
+
+    public void removeInvite(String player) {
+        Invite i = getInvite(player);
+        invites.remove(i);
+    }
+
+    public void removeInvite(UUID player){
         Invite i = getInvite(player);
         invites.remove(i);
     }

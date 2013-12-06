@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -27,8 +28,8 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 public class Data {
 
     private TeleportMadness mad;
-    private HashMap<String, PlayerData> playerDataMap;
-    private HashMap<String, WorldData> worldDataMap;
+    private HashMap<UUID, PlayerData> playerDataMap;
+    private HashMap<UUID, WorldData> worldDataMap;
     private List<ClaimData> claimDataList;
     private JumpPoint serverHome;
     private final String DB_LOC;
@@ -39,8 +40,8 @@ public class Data {
         this.mad = mad;
         d = this;
         DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
-        playerDataMap = new HashMap<String, PlayerData>();
-        worldDataMap = new HashMap<String, WorldData>();
+        playerDataMap = new HashMap<UUID, PlayerData>();
+        worldDataMap = new HashMap<UUID, WorldData>();
         claimDataList = new ArrayList<ClaimData>();
     }
 
@@ -75,16 +76,16 @@ public class Data {
         db.store(data);
     }
 
-    public void savePlayers(HashMap<String, PlayerData> players) {
+    public void savePlayers(HashMap<UUID, PlayerData> players) {
         for (Player p : mad.getServer().getOnlinePlayers()) {
-            savePlayer(players.get(p.getName()));
+            savePlayer(players.get(p.getUniqueId()));
         }
     }
 
     public void loadPlayer(Player player) {
-        if (playerDataMap.get(player.getName()) != null) {
+        if (playerDataMap.get(player.getUniqueId()) != null) {
             mad.getLogger().log(Level.FINEST, "Data for player {0} is alread loaded, reloading.", player);
-            playerDataMap.remove(player.getName());
+            playerDataMap.remove(player.getUniqueId());
         } else {
             mad.getLogger().log(Level.FINEST, "Loading data for player {0}", player);
         }
@@ -96,20 +97,20 @@ public class Data {
             data.setPlayer(player);
         }
         db.store(data);
-        playerDataMap.put(player.getName(), data);
+        playerDataMap.put(player.getUniqueId(), data);
     }
 
     public void unloadPlayer(Player player) {
-        playerDataMap.remove(player.getName());
+        playerDataMap.remove(player.getUniqueId());
     }
 
     public void saveWorld(WorldData data) {
         db.store(data);
     }
 
-    public void saveWorlds(HashMap<String, WorldData> worlds) {
+    public void saveWorlds(HashMap<UUID, WorldData> worlds) {
         for (World w : mad.getServer().getWorlds()) {
-            saveWorld(worlds.get(w.getName()));
+            saveWorld(worlds.get(w.getUID()));
         }
     }
 
@@ -121,11 +122,11 @@ public class Data {
             data = new WorldData();
             data.setName(world.getName());
         }
-        worldDataMap.put(world.getName(), data);
+        worldDataMap.put(world.getUID(), data);
     }
 
     public void unloadWorld(World world) {
-        worldDataMap.remove(world.getName());
+        worldDataMap.remove(world.getUID());
     }
 
     public void loadServerJumps() {
@@ -166,10 +167,9 @@ public class Data {
                 return cd;
             }
         }
-        ClaimData data = null;
         IQuery query = new CriteriaQuery(ClaimData.class, Where.equal("id", claim.getID()));
         Objects<ClaimData> claims = db.getObjects(query);
-        data = claims.getFirst();
+        ClaimData data = claims.getFirst();
         if (data == null) {
             PermissionGroup group = new PermissionGroup();
             data = new ClaimData();
@@ -183,16 +183,20 @@ public class Data {
         return data;
     }
 
-    public HashMap<String, PlayerData> getPlayerDataMap() {
+    public HashMap<UUID, PlayerData> getPlayerDataMap() {
         return playerDataMap;
     }
 
-    public PlayerData getPlayerData(String playerName) {
-        return playerDataMap.get(playerName);
+    public PlayerData getPlayerData(String player) {
+        return playerDataMap.get(Bukkit.getServer().getPlayer(player).getUniqueId());
+    }
+
+    public PlayerData getPlayerData(UUID player) {
+        return playerDataMap.get(player);
     }
 
     public PlayerData getPlayerData(Player player) {
-        return playerDataMap.get(player.getName());
+        return playerDataMap.get(player.getUniqueId());
     }
     
     public ClaimData getClaimData(long id){
@@ -223,16 +227,16 @@ public class Data {
         return GriefPrevention.instance.dataStore.getClaim(id);
     }
 
-    public HashMap<String, WorldData> getWorldDataMap() {
+    public HashMap<UUID, WorldData> getWorldDataMap() {
         return worldDataMap;
     }
 
-    public WorldData getWorldData(String worldName) {
-        return worldDataMap.get(worldName);
+    public WorldData getWorldData(UUID world) {
+        return worldDataMap.get(world);
     }
 
     public WorldData getWorldData(World world) {
-        return worldDataMap.get(world.getName());
+        return worldDataMap.get(world.getUID());
     }
 
     public void saveAll() {
@@ -251,7 +255,7 @@ public class Data {
 
     public void createClaim(Claim claim) {
         for (Player p : mad.getServer().getOnlinePlayers()) {
-            for (JumpPoint j : playerDataMap.get(p.getName()).getHomes()) {
+            for (JumpPoint j : playerDataMap.get(p.getUniqueId()).getHomes()) {
                 if (claim.contains(j.getLocation(), true, true)) {
                     loadClaimData(claim);
                     return;
@@ -261,10 +265,10 @@ public class Data {
     }
 
     public void deleteClaim(Claim claim) {
-        for (ClaimData d : claimDataList) {
-            if (d.getId() == claim.getID()) {
-                db.delete(d);
-                claimDataList.remove(d);
+        for (ClaimData data : claimDataList) {
+            if (data.getId() == claim.getID()) {
+                db.delete(data);
+                claimDataList.remove(data);
                 break;
             }
         }

@@ -26,7 +26,7 @@ public class ClaimListener implements Listener{
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClaimResize(ClaimResizeEvent event){
-        plugin.getDataManager().updateClaim(event.getNewClaim());
+        plugin.getDataManager().updateClaim(event.getClaim());
         
     }
     

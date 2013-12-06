@@ -1,6 +1,7 @@
 package com.liddev.teleportmadness;
 
 import java.io.Serializable;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,7 +14,7 @@ public class JumpPoint implements Serializable {
 
     private long id;
 
-    private String worldName;
+    private UUID worldUUID;
 
     private JumpType type;
 
@@ -67,12 +68,16 @@ public class JumpPoint implements Serializable {
         this.tpAcceptMessage = tpAcceptMessage;
     }
 
-    public String getWorldName() {
-        return worldName;
+    public UUID getWorldUUID() {
+        return worldUUID;
     }
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
+    public void setWorldUUID(UUID worldName) {
+        this.worldUUID = worldName;
+    }
+    
+    public void setWorld(World world){
+        this.worldUUID = world.getUID();
     }
 
     public double getX() {
@@ -116,7 +121,7 @@ public class JumpPoint implements Serializable {
     }
 
     public void setLocation(Location location) {
-        this.worldName = location.getWorld().getName();
+        this.worldUUID = location.getWorld().getUID();
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
@@ -125,7 +130,7 @@ public class JumpPoint implements Serializable {
     }
 
     public Location getLocation() {
-        World world = Bukkit.getServer().getWorld(worldName);
+        World world = Bukkit.getServer().getWorld(worldUUID);
         return new Location(world, x, y, z, yaw, pitch);
     }
 
@@ -147,7 +152,7 @@ public class JumpPoint implements Serializable {
     
     @Override
     public String toString(){
-        return name + ": W: " + worldName + " X: " + x + " Y: " + y + " Z: " + z;
+        return name + ": W: " + worldUUID + " X: " + x + " Y: " + y + " Z: " + z;
     }
     /*public Claim getClaim(){
      return claim;

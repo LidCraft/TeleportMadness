@@ -17,6 +17,7 @@ public class HomeAllow implements MadCommand {
     public boolean run(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         ClaimData cd = Data.get().getClaimData(player.getLocation());
+        //TODO: replace all getOwnerName() api calls to griefprevention with equivalent uuid calls.
         if (Data.get().getClaim(cd.getId()).getOwnerName().equals(player.getName()) || player.hasPermission("teleportMadness.home.claim.allow.admin")) {
             PermissionLevel p = PermissionLevel.getPermission(args[0]);
             cd.setPermissionLevel(p);

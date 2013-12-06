@@ -2,6 +2,7 @@ package com.liddev.teleportmadness;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 
 /**
@@ -14,9 +15,9 @@ public class PermissionGroup implements Serializable {
 
     private String name;
 
-    private List<Long> whiteList;
+    private List<UUID> whiteList;
 
-    private List<Long> blackList;
+    private List<UUID> blackList;
     
     public long getId() {
         return id;
@@ -26,26 +27,26 @@ public class PermissionGroup implements Serializable {
         this.id = id;
     }
 
-    public List<Long> getWhiteList() {
+    public List<UUID> getWhiteList() {
         return whiteList;
     }
 
-    public void setWhiteList(List<Long> whiteList) {
+    public void setWhiteList(List<UUID> whiteList) {
         this.whiteList = whiteList;
     }
 
-    public List<Long> getBlackList() {
+    public List<UUID> getBlackList() {
         return blackList;
     }
 
-    public void setBlackList(List<Long> blackList) {
+    public void setBlackList(List<UUID> blackList) {
         this.blackList = blackList;
     }
 
     public boolean isTrustedPlayer(Player player) {
         boolean trusted = false;
         for (int i = 0; i < whiteList.size(); i++) {
-            if (player.getName().equals(whiteList.get(i))) {
+            if (player.getUniqueId().equals(whiteList.get(i))) {
                 trusted = true;
             }
         }
@@ -55,7 +56,7 @@ public class PermissionGroup implements Serializable {
     public boolean isUntrustedPlayer(Player player) {
         boolean untrusted = false;
         for (int i = 0; i < blackList.size(); i++) {
-            if (player.getName().equals(blackList.get(i))) {
+            if (player.getUniqueId().equals(blackList.get(i))) {
                 untrusted = true;
             }
         }
