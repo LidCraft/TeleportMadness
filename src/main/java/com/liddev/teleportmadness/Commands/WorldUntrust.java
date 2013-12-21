@@ -11,7 +11,7 @@ public class WorldUntrust implements MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return false;
     }
     
 }

@@ -3,7 +3,6 @@ package com.liddev.teleportmadness.Commands;
 import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.Managers.Data;
 import com.liddev.teleportmadness.PlayerData;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

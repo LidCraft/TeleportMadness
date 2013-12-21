@@ -4,7 +4,7 @@
 
     <groupId>com.liddev</groupId>
     <artifactId>TeleportMadness</artifactId>
-    <version>0.01-SNAPSHOT</version>
+    <version>1.0-Alpha</version>
     <packaging>jar</packaging>
 
     <name>TeleportMadness</name>
