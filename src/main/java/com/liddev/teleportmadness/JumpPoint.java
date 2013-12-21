@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -35,6 +36,16 @@ public class JumpPoint implements Serializable {
     private float pitch;
 
     private float yaw;
+
+    public JumpPoint(Location loc, String name) {
+        setLocation(loc);
+        this.name = name;
+    }
+
+    public JumpPoint(Location loc, String name, JumpType type) {
+        this(loc, name);
+        this.type = type;
+    }
 
     public void setType(JumpType type) {
         this.type = type;
@@ -120,7 +131,7 @@ public class JumpPoint implements Serializable {
         this.yaw = yaw;
     }
 
-    public void setLocation(Location location) {
+    public final void setLocation(Location location) {
         this.worldUUID = location.getWorld().getUID();
         this.x = location.getX();
         this.y = location.getY();
@@ -152,13 +163,10 @@ public class JumpPoint implements Serializable {
     
     @Override
     public String toString(){
-        return name + ": W: " + worldUUID + " X: " + x + " Y: " + y + " Z: " + z;
+        return name + ": " + " X: " + x + " Y: " + y + " Z: " + z;
     }
-    /*public Claim getClaim(){
-     return claim;
-     }
-    
-     public void setClaim(Claim claim){
-     this.claim = claim;
-     }*/
+
+    public String debugString() {
+        return worldUUID + "::" + Bukkit.getServer().getWorld(worldUUID).getName() + ": " + toString() + " Pitch: " + pitch + " Yaw: " + yaw;
+    }
 }

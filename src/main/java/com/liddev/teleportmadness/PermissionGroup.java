@@ -43,7 +43,7 @@ public class PermissionGroup implements Serializable {
         this.blackList = blackList;
     }
 
-    public boolean isTrustedPlayer(Player player) {
+    public boolean isWhitelisted(Player player) {
         boolean trusted = false;
         for (int i = 0; i < whiteList.size(); i++) {
             if (player.getUniqueId().equals(whiteList.get(i))) {
@@ -53,7 +53,7 @@ public class PermissionGroup implements Serializable {
         return trusted;
     }
 
-    public boolean isUntrustedPlayer(Player player) {
+    public boolean isBlacklisted(Player player) {
         boolean untrusted = false;
         for (int i = 0; i < blackList.size(); i++) {
             if (player.getUniqueId().equals(blackList.get(i))) {
@@ -61,6 +61,24 @@ public class PermissionGroup implements Serializable {
             }
         }
         return untrusted;
+    }
+
+    public void whitelist(Player p) {
+        whitelist(p.getUniqueId());
+    }
+
+    public void whitelist(UUID uuid) {
+        blackList.remove(uuid);
+        whiteList.add(uuid);
+    }
+
+    public void blacklist(Player p) {
+        blacklist(p.getUniqueId());
+    }
+
+    public void blacklist(UUID uuid) {
+        whiteList.remove(uuid);
+        blackList.add(uuid);
     }
 
     /**

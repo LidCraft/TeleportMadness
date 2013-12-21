@@ -32,7 +32,7 @@ public class ClaimListener implements Listener{
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClaimDelete(ClaimDeletedEvent event){
-        plugin.getDataManager().deleteClaim(event.getClaim());
+        plugin.getDataManager().onDeleteClaim(event.getClaim());
     }
     
     @EventHandler(priority = EventPriority.LOWEST)

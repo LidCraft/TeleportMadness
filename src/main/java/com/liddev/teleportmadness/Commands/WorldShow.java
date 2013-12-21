@@ -11,7 +11,8 @@ public class WorldShow implements MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //TODO: implement world show.
+        return false;
     }
     
 }

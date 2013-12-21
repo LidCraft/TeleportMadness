@@ -8,8 +8,11 @@ public enum PermissionLevel {
 
     OWNER(0), PERMISSIONTRUST(1), TRUST(2), CONTAINERTRUST(3), ACCESSTRUST(4), EVERYONE(5);
 
+    /**
+     *
+     */
     public static final PermissionLevel defaultLevel = EVERYONE;
-    private final int level;
+    public final int level;
 
     PermissionLevel(int n) {
         level = n;

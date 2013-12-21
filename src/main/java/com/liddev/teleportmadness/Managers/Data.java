@@ -30,6 +30,7 @@ public class Data {
     private TeleportMadness mad;
     private HashMap<UUID, PlayerData> playerDataMap;
     private HashMap<UUID, WorldData> worldDataMap;
+    private HashMap<Long, ClaimData> claimDataMap;
     private List<ClaimData> claimDataList;
     private JumpPoint serverHome;
     private final String DB_LOC;
@@ -42,6 +43,7 @@ public class Data {
         DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
         playerDataMap = new HashMap<UUID, PlayerData>();
         worldDataMap = new HashMap<UUID, WorldData>();
+        claimDataMap = new HashMap<Long, ClaimData>();
         claimDataList = new ArrayList<ClaimData>();
     }
 
@@ -66,7 +68,7 @@ public class Data {
             loadPlayer(player);
         }
         loadServerJumps();
-        for(World world : Bukkit.getWorlds()){
+        for (World world : Bukkit.getWorlds()) {
             loadWorld(world);
         }
     }
@@ -89,15 +91,26 @@ public class Data {
         } else {
             mad.getLogger().log(Level.FINEST, "Loading data for player {0}", player);
         }
-        IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("name", player.getName()));
-        Objects<PlayerData> players = db.getObjects(query);
-        PlayerData data = (PlayerData) players.getFirst();
+        PlayerData data = getPlayer(player.getUniqueId());
         if (data == null) {
             data = new PlayerData();
             data.setPlayer(player);
+            db.store(data);
         }
-        db.store(data);
+        data.setName(player.getName());
         playerDataMap.put(player.getUniqueId(), data);
+    }
+
+    public PlayerData getPlayer(String name) {
+        IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("name", name));
+        Objects<PlayerData> players = db.getObjects(query);
+        return (PlayerData) players.getFirst();
+    }
+
+    public PlayerData getPlayer(UUID uuid) {
+        IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("playerUUID", uuid));
+        Objects<PlayerData> players = db.getObjects(query);
+        return (PlayerData) players.getFirst();
     }
 
     public void unloadPlayer(Player player) {
@@ -134,12 +147,12 @@ public class Data {
         Objects<JumpPoint> points = db.getObjects(query);
         serverHome = points.getFirst();
     }
-    
-    public JumpPoint getServerHome(){
+
+    public JumpPoint getServerHome() {
         return serverHome;
     }
-    
-    public void setServerHome(JumpPoint home){
+
+    public void setServerHome(JumpPoint home) {
         serverHome = home;
     }
 
@@ -153,7 +166,7 @@ public class Data {
         }
     }
 
-    public ClaimData loadClaim(Location location) {
+    public ClaimData loadClaimData(Location location) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, null);
         if (claim != null) {
             return loadClaimData(claim);
@@ -162,10 +175,8 @@ public class Data {
     }
 
     public ClaimData loadClaimData(Claim claim) {
-        for(ClaimData cd : claimDataList){
-            if(cd.getId() == claim.getID()){
-                return cd;
-            }
+        if (claimDataMap.containsKey(claim.getID())) {
+            return claimDataMap.get(claim.getID());
         }
         IQuery query = new CriteriaQuery(ClaimData.class, Where.equal("id", claim.getID()));
         Objects<ClaimData> claims = db.getObjects(query);
@@ -179,6 +190,7 @@ public class Data {
             data.setPermissionGroup(group);
             db.store(data);
         }
+        claimDataMap.put(claim.getID(), data);
         claimDataList.add(data);
         return data;
     }
@@ -198,32 +210,21 @@ public class Data {
     public PlayerData getPlayerData(Player player) {
         return playerDataMap.get(player.getUniqueId());
     }
-    
-    public ClaimData getClaimData(long id){
-        Claim claim = getClaim(id);
-        for(ClaimData data : claimDataList){
-            if(data.getId() == claim.getID()){
-                return data;
-            }
-        }
-        return null;
+
+    public ClaimData getClaimData(long id) {
+        return claimDataMap.get(id);
     }
-    
-    public ClaimData getClaimData(Location l){
+
+    public ClaimData getClaimData(Location l) {
         Claim claim = getClaim(l);
-        for(ClaimData data : claimDataList){
-            if(data.getId() == claim.getID()){
-                return data;
-            }
-        }
-        return null;
+        return getClaimData(claim.getID());
     }
-    
-    public Claim getClaim(Location l){
+
+    public Claim getClaim(Location l) {
         return GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
     }
-    
-    public Claim getClaim(long id){
+
+    public Claim getClaim(long id) {
         return GriefPrevention.instance.dataStore.getClaim(id);
     }
 
@@ -249,6 +250,7 @@ public class Data {
         mad = null;
         playerDataMap = null;
         worldDataMap = null;
+        claimDataMap = null;
         claimDataList = null;
         serverHome = null;
     }
@@ -264,14 +266,11 @@ public class Data {
         }
     }
 
-    public void deleteClaim(Claim claim) {
-        for (ClaimData data : claimDataList) {
-            if (data.getId() == claim.getID()) {
-                db.delete(data);
-                claimDataList.remove(data);
-                break;
-            }
-        }
+    public void onDeleteClaim(Claim claim) {
+        ClaimData d = claimDataMap.get(claim.getID());
+        claimDataMap.remove(claim.getID());
+        claimDataList.remove(d);
+        db.delete(d);
     }
 
     public void updateClaim(Claim claim) {
@@ -281,8 +280,8 @@ public class Data {
     public void modifyClaim(Claim claim) {
         //TODO: deal with events on claim modification
     }
-    
-    public static Data get(){
+
+    public static Data get() {
         return d;
     }
 }

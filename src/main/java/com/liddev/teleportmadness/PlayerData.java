@@ -2,11 +2,8 @@ package com.liddev.teleportmadness;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -21,6 +18,8 @@ public class PlayerData implements Serializable {
     private long id;
 
     private UUID playerUUID;
+
+    private String name;
  
     private Map<UUID, Integer> worldLimits;
     
@@ -41,7 +40,12 @@ public class PlayerData implements Serializable {
     }
 
     public Player getPlayer() {
-        return Bukkit.getServer().getPlayer(playerUUID);
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.getUniqueId().equals(playerUUID)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     public void setPlayer(Player player) {
@@ -54,6 +58,14 @@ public class PlayerData implements Serializable {
 
     public UUID getPlayerUUID() {
         return playerUUID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Map<UUID, Integer> getWorldLimits() {
@@ -69,11 +81,25 @@ public class PlayerData implements Serializable {
     }
 
     public int getWorldLimit(String world) {
-        return worldLimits.get(world);
+        return getWorldLimit(Bukkit.getServer().getWorld(world));
     }
 
     public int getWorldLimit(World world) {
         return worldLimits.get(world.getUID());
+    }
+
+    public int getWorldCount(World world) {
+        int result = 0;
+        for (JumpPoint p : homes) {
+            if (p.getWorldUUID() == world.getUID() && !p.getType().equals(JumpType.PERSONAL)) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    public int getWorldCount(String world) {
+        return getWorldCount(Bukkit.getServer().getWorld(world));
     }
 
     public boolean isPrivateAllowed() {
@@ -92,6 +118,17 @@ public class PlayerData implements Serializable {
         this.homes = homes;
     }
 
+    public boolean hasHome(JumpPoint home) {
+        if (homes.contains(home)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasHome(String home) {
+        return getHome(home) != null;
+    }
+
     public List<JumpPoint> getHomes() {
         return homes;
     }
@@ -104,18 +141,28 @@ public class PlayerData implements Serializable {
         }
         return null;
     }
-    
-    public boolean hasHome(String home){
-        if(getHome(home) != null){
+
+    public void addHome(JumpPoint home) {
+        homes.add(home);
+    }
+
+    public boolean removeHome(String home) {
+        for (JumpPoint p : homes) {
+            if (p.getName().equals(home)) {
+                return removeHome(p);
+            }
+        }
+        return false;
+    }
+
+    public boolean removeHome(JumpPoint home) {
+        if (homes.contains(home)) {
+            homes.remove(home);
             return true;
         }
         return false;
     }
 
-    public void addHome(JumpPoint home) {
-        homes.add(home);
-    }
-    
     public void setDefaultHome(JumpPoint defaultHome) {
         this.defaultHome = defaultHome;
     }
@@ -177,5 +224,9 @@ public class PlayerData implements Serializable {
             return invites.get(invites.size());
         }
         return null;
+    }
+
+    public int getHomeCount() {
+        return homes.size();
     }
 }

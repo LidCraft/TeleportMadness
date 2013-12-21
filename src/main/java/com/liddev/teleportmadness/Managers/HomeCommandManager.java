@@ -20,13 +20,13 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
 
     // name may be more than one word, class, console, min args, max args
     HOMESET(HomeSet.class, false, "teleportMadness.home.set", 1, 1, "set", "add", "+"),
-    HOMESETOTHER(HomeSet.class, false, "teleportMadness.home.set.other", 2, 2, "set", "add", "+"),
-    HOMEREMOVE(HomeRemove.class, false, "teleportMadness.home.set", 1, 1, "remove", "rm", "-"),
-    HOMEREMOVEOTHER(HomeRemove.class, true, "teleportMadness.home.set", 2, 2, "remove", "rm", "-"),
+    HOMESETOTHER(HomeSet.class, false, "teleportMadness.home.set.other", 2, 3, "set", "add", "+"),
+    HOMEREMOVE(HomeRemove.class, false, "teleportMadness.home.remove", 1, 1, "remove", "rm", "-"),
+    HOMEREMOVEOTHER(HomeRemove.class, true, "teleportMadness.home.remove.other", 2, 2, "remove", "rm", "-"),
     HOMEDEFAULTSET(HomeDefaultSet.class, false, "teleportMadness.home.default.set", 1, 1, "default set", "d s"),
     HOMEDEFAULTREMOVE(HomeDefaultRemove.class, false, "teleportMadness.home.default.remove", 0, 0, "default remove", "d r"),
-    HOMELIST(HomeList.class, false, "teleportMadness.home.set", 0, 0, "list", "l", "ls"),
-    HOMELISTOTHER(HomeList.class, true, "teleportMadness.home.set", 1, 1, "list", "l", "ls"),
+    HOMELIST(HomeList.class, false, "teleportMadness.home.list", 0, 0, "list", "l", "ls"),
+    HOMELISTOTHER(HomeList.class, true, "teleportMadness.home.list.other", 1, 1, "list", "l", "ls"),
     HOMEINVITE(HomeInvite.class, false, "teleportMadness.home.invite", 1, 2, "invite", "i", "inv"),
     HOMEACCEPT(HomeAccept.class, false, "teleportMadness.home.accept", 1, 1, "accept", "a", "acp"),
     HOMESHOW(HomeShow.class, false, "teleportMadness.home.show", 0, 0, "show", "view"),
@@ -38,11 +38,11 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
     HOMEUNTRUST(HomeUntrust.class, false, "teleportMadness.home.claim.untrust", 1, 1, "untrust", "ut"),
     HOMEALLOW(HomeAllow.class, false, "teleportMadness.home.claim.allow", 1, 1, "allow", "al"),
     HOMEDENY(HomeDeny.class, false, "teleportMadness.home.claim.deny", 1, 1, "deny", "dn"),
-    HOMETRUSTED(HomeTrusted.class, false, "teleportMadness.home.claim.deny", 0, 0, "trusted", "td"),
+    HOMETRUSTED(HomeTrusted.class, false, "teleportMadness.home.claim.trusted", 0, 0, "trusted", "td"),
     HOMESERVER(HomeServerCommandManager.class, true, null, 0, -1, "server", "s"),
     HOMEWORlD(HomeWorldCommandManager.class, true, null, 0, -1, "world", "w"),
     HOME(Home.class, false, "teleportMadness.home", 0, 1),
-    HOMEOTHER(Home.class, false, "teleportMadness.home.other", 2, 2),
+    HOMEOTHER(Home.class, false, "teleportMadness.home.other", 2, 2)
     //HOMEGROUPLIMIT(),
     //HOMEWORLDINFO(),
     //HOMEINFOPLAYER(),
@@ -82,9 +82,16 @@ public enum HomeCommandManager implements CommandEnum, MadCommand {
                             this.get().getClass()});
             } else if (sender instanceof ConsoleCommandSender) {
                 Bukkit.getServer().getLogger().finest("Console Issued Command.");
+                if (!console) {
+                    StringBuilder b = new StringBuilder();
+                    for (String s : commands) {
+                        b.append(s).append(" ");
+                    }
+                    sender.sendMessage("Command \"" + b.toString() + "\", can not be issued from the consol.");
+                    return false;
+                }
             } else {
-                Bukkit.getServer().getLogger().finest("Madness is here the sender "
-                        + "could not be found");
+                Bukkit.getServer().getLogger().finest("Madness is here the sender is unknown");
             }
         } else {
             sender = Bukkit.getConsoleSender();
