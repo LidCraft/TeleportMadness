@@ -1,6 +1,5 @@
-package com.liddev.teleportmadness.Managers;
+package com.liddev.teleportmadness;
 
-import com.liddev.teleportmadness.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +24,7 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  * @author Renlar <liddev.com>
  */
 //TODO: Consider adding sqlibrary to support other databases.
-public class Data {
+public class DataManager {
 
     private TeleportMadness mad;
     private HashMap<UUID, PlayerData> playerDataMap;
@@ -35,9 +34,9 @@ public class Data {
     private JumpPoint serverHome;
     private final String DB_LOC;
     private ODB db = null;
-    private static Data d;
+    private static DataManager d;
 
-    public Data(TeleportMadness mad) {
+    public DataManager(TeleportMadness mad) {
         this.mad = mad;
         d = this;
         DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
@@ -75,7 +74,9 @@ public class Data {
 
     public void savePlayer(PlayerData data) {
         //TODO: add loging and playerdata checks.
-        db.store(data);
+        if (data != null) {
+            db.store(data);
+        }
     }
 
     public void savePlayers(HashMap<UUID, PlayerData> players) {
@@ -95,7 +96,6 @@ public class Data {
         if (data == null) {
             data = new PlayerData();
             data.setPlayer(player);
-            db.store(data);
         }
         data.setName(player.getName());
         playerDataMap.put(player.getUniqueId(), data);
@@ -104,12 +104,18 @@ public class Data {
     public PlayerData getPlayer(String name) {
         IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("name", name));
         Objects<PlayerData> players = db.getObjects(query);
+        if (players.size() == 0) {
+            return null;
+        }
         return (PlayerData) players.getFirst();
     }
 
     public PlayerData getPlayer(UUID uuid) {
         IQuery query = new CriteriaQuery(PlayerData.class, Where.equal("playerUUID", uuid));
         Objects<PlayerData> players = db.getObjects(query);
+        if (players.size() == 0) {
+            return null;
+        }
         return (PlayerData) players.getFirst();
     }
 
@@ -118,7 +124,9 @@ public class Data {
     }
 
     public void saveWorld(WorldData data) {
-        db.store(data);
+        if (data != null) {
+            db.store(data);
+        }
     }
 
     public void saveWorlds(HashMap<UUID, WorldData> worlds) {
@@ -130,7 +138,10 @@ public class Data {
     public void loadWorld(World world) {
         IQuery query = new CriteriaQuery(WorldData.class, Where.equal("name", world.getName()));
         Objects<WorldData> worlds = db.getObjects(query);
-        WorldData data = worlds.getFirst();
+        WorldData data = null;
+        if (worlds.size() > 0) {
+            data = worlds.getFirst();
+        }else
         if (data == null) {
             data = new WorldData();
             data.setName(world.getName());
@@ -145,7 +156,10 @@ public class Data {
     public void loadServerJumps() {
         IQuery query = new CriteriaQuery(JumpPoint.class, Where.equal("type", JumpType.GLOBAL));
         Objects<JumpPoint> points = db.getObjects(query);
-        serverHome = points.getFirst();
+            serverHome = null;
+        if (points.size() > 0) {
+            serverHome = points.getFirst();
+        }
     }
 
     public JumpPoint getServerHome() {
@@ -281,7 +295,7 @@ public class Data {
         //TODO: deal with events on claim modification
     }
 
-    public static Data get() {
+    public static DataManager get() {
         return d;
     }
 }

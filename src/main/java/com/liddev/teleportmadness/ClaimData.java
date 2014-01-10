@@ -1,6 +1,5 @@
 package com.liddev.teleportmadness;
 
-import com.liddev.teleportmadness.Managers.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,26 +64,26 @@ public class ClaimData implements Serializable {
     }
 
     public boolean isClaimManager(Player p) {
-        return Data.get().getClaim(id).isManager(p);
+        return DataManager.get().getClaim(id).isManager(p);
     }
 
     public boolean isClaimManager(String p) {
-        return Data.get().getClaim(id).isManager(p);
+        return DataManager.get().getClaim(id).isManager(p);
     }
 
     public Player getClaimOwner() {
-        return Bukkit.getPlayer(Data.get().getClaim(id).getOwnerName());
+        return Bukkit.getPlayer(DataManager.get().getClaim(id).getOwnerName());
     }
 
     public boolean hasPermission(Player p) {
-        if (p.hasPermission("teleportMadness.home.bypass") || permissionGroup.isWhitelisted(p) || permissionLevel == PermissionLevel.EVERYONE || Data.get().getClaim(id).getOwnerName().equals(p.getName())) {
+        if (p.hasPermission("teleportMadness.home.bypass") || permissionGroup.isWhitelisted(p) || permissionLevel == PermissionLevel.EVERYONE || DataManager.get().getClaim(id).getOwnerName().equals(p.getName())) {
             return true;
         }
         List<String> builder = new ArrayList<String>();
         List<String> container = new ArrayList<String>();
         List<String> access = new ArrayList<String>();
         List<String> manager = new ArrayList<String>();
-        Data.get().getClaim(id).getPermissions(builder, container, access, manager);
+        DataManager.get().getClaim(id).getPermissions(builder, container, access, manager);
         if (permissionLevel.level <= PermissionLevel.ACCESSTRUST.level) {
             if (access.contains("public") || container.contains("everyone") || access.contains(p.getName())) {
                 return true;

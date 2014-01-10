@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author Renlar <liddev.com>
  */
-public class WorldUntrust implements MadCommand {
+public class WorldUntrust extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {

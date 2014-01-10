@@ -1,15 +1,13 @@
 package com.liddev.teleportmadness;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.command.ConsoleCommandSender;
 
 /**
  *
  * @author Renlar <liddev.com>
  */
-public interface MadCommand {
-    
+public abstract class MadCommand {
+
     public abstract boolean run(CommandSender sender, String[] args);
-    
 }

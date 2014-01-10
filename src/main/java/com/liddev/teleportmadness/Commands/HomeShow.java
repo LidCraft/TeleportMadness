@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author Renlar <liddev.com>
  */
-public class HomeShow implements MadCommand {
+public class HomeShow extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {

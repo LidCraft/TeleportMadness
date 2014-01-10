@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author Renlar <liddev.com>
  */
-public class ServerRemove implements MadCommand {
+public class ServerRemove extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {

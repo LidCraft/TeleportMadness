@@ -1,10 +1,9 @@
 package com.liddev.teleportmadness.Commands;
 
 import com.liddev.teleportmadness.ClaimData;
+import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.MadCommand;
-import com.liddev.teleportmadness.Managers.Data;
 import com.liddev.teleportmadness.PlayerData;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,16 +11,16 @@ import org.bukkit.entity.Player;
  *
  * @author Renlar <liddev.com>
  */
-public class HomeTrust implements MadCommand {
+public class HomeTrust extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        PlayerData pData = Data.get().getPlayer(args[0]);
+        PlayerData pData = DataManager.get().getPlayer(args[0]);
         if (pData == null) {
             return false;
         }
-        ClaimData data = Data.get().loadClaimData(p.getLocation());
+        ClaimData data = DataManager.get().loadClaimData(p.getLocation());
         if (data.isClaimManager(pData.getName())) {
             data.getPermissionGroup().whitelist(pData.getPlayerUUID());
             return true;

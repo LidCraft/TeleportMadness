@@ -1,17 +1,13 @@
 package com.liddev.teleportmadness.Commands;
 
 import com.liddev.teleportmadness.MadCommand;
-import com.liddev.teleportmadness.TeleportMadness;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  *
  * @author Renlar <liddev.com>
  */
-public class ServerHome implements MadCommand{
-    
+public class ServerHome extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {

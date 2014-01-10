@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author Renlar <liddev.com>
  */
-public class WorldLimit implements MadCommand {
+public class WorldLimit extends MadCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {

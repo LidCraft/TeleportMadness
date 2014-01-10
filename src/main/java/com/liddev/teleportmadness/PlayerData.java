@@ -31,6 +31,10 @@ public class PlayerData implements Serializable {
     
     private List<Invite> invites;
 
+    public PlayerData() {
+        //TODO: initialize all defaults defaultHome invites homlimit worldlimits from config file.
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -50,6 +54,7 @@ public class PlayerData implements Serializable {
 
     public void setPlayer(Player player) {
         this.playerUUID = player.getUniqueId();
+        this.name = player.getName();
     }
 
     public void setPlayerUUID(UUID playerUUID) {
