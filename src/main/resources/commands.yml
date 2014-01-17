@@ -3,92 +3,53 @@ mad:
     alias:
         - mad
         - m
-    pattern: '<this> [co]'
+    pattern: '<this> [str]'
     class: com.liddev.teleportmadness.Commands.Mad.class
     perm: teleportMadness.mad
     console: false
     desc: 
     help: 
-#    sub:
+    sub:
 #        reload:
 #            alias:
 #                - reload
 #                - rl
 #            pattern: '<this>'
 #            class: com.liddev.teleportmadness.Commands.Reload.class
+#            perm: teleportMadness.reload
+#            console: true
 #            desc:
 #            help:
-            
-
-home:
-    alias:
-        - home
-        - h
-    pattern: '[mad] <this> [co]'
-    class: com.liddev.teleportmadness.Commands.Home.class
-    perm: teleportMadness.home
-    console: false
-    desc: 
-    help: 
-    sub:
-        set:
+        home:
             alias:
-                - set
-                - add
-                - +
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeSet.class
-            perm: teleportMadness.home.set
+                - home
+                - h
+            pattern: '<this> [str]'
+            class: com.liddev.teleportmadness.Commands.Home.class
+            perm: teleportMadness.home
             console: false
-            desc:
-            help:
-        setother:
-            alias:
-                - set
-                - add
-                - +
-            pattern: '<this> <o> <o> [o]'
-            class: com.liddev.teleportmadness.Commands.HomeSet.class
-            perm: teleportMadness.home.set.other
-            console: false
-            desc:
-            help:
-        remove:
-            alias:
-                - remove
-                - rm
-                - -
-            pattern: '<this> [o]'
-            class: com.liddev.teleportmadness.Commands.HomeRemove.class
-            perm: teleportMadness.home.remove
-            console: false
-            desc:
-            help:
-        removeother:
-            alias:
-                - remove
-                - rm
-                - -
-            pattern: '<this> <o> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeRemove.class
-            perm: teleportMadness.home.remove.other
-            console: true
-            desc:
-            help:
-        default:
-            alias:
-                - default
-                - d
-            pattern: '<this> <c>'
+            desc: 
+            help: 
             sub:
                 set:
                     alias:
                         - set
                         - add
                         - +
-                    pattern: '<this> [o]'
-                    class: com.liddev.teleportmadness.Commands.HomeDefaultSet.class
-                    perm: teleportMadness.home.default.set
+                    pattern: '<super> <this> <str-home.sub.*.alias>'
+                    class: com.liddev.teleportmadness.Commands.HomeSet.class
+                    perm: teleportMadness.home.set
+                    console: false
+                    desc:
+                    help:
+                setother:
+                    alias:
+                        - set
+                        - add
+                        - +
+                    pattern: '<super> <this> <str> <str-home.sub.*.alias> [str]'
+                    class: com.liddev.teleportmadness.Commands.HomeSet.class
+                    perm: teleportMadness.home.set.other
                     console: false
                     desc:
                     help:
@@ -97,143 +58,184 @@ home:
                         - remove
                         - rm
                         - -
-                    pattern: '<this>'
-                    class: com.liddev.teleportmadness.Commands.HomeDefaultRemove.class
-                    perm: teleportMadness.home.default.remove
+                    pattern: '<super> <this> [str]'
+                    class: com.liddev.teleportmadness.Commands.HomeRemove.class
+                    perm: teleportMadness.home.remove
                     console: false
                     desc:
                     help:
-        trust:
-            alias:
-                - trust
-                - t
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeTrust.class
-            perm: teleportMadness.home.trust
-            console: false
-            desc:
-            help:
-        untrust:
-            alias:
-                - untrust
-                - ut
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeUntrust.class
-            perm: teleportMadness.home.untrust
-            console: false
-            desc:
-            help:
-        allow:
-            alias:
-                - allow
-                - a
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeAllow.class
-            perm: teleportMadness.home.allow
-            console: false
-            desc:
-            help:
-        deny:
-            alias:
-                - deny
-                - d
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeDeny.class
-            perm: teleportMadness.home.deny
-            console: false
-            desc:
-            help:
-        trusted:
-            alias:
-                - trusted
-                - td
-            pattern: '<this>'
-            class: com.liddev.teleportmadness.Commands.HomeTrusted.class
-            perm: teleportMadness.home.trusted
-            console: false
-            desc:
-            help:
-        list:
-            alias:
-                - list
-                - ls
-                - l
-            pattern: '<this>'
-            class: com.liddev.teleportmadness.Commands.HomeList.class
-            perm: teleportMadness.home.list
-            console: false
-            desc:
-            help:
-        listother:
-            alias:
-                - list
-                - ls
-                - l
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeList.class
-            perm: teleportMadness.home.list.other
-            console: true
-            desc:
-            help:
-        show:
-            alias:
-                - show
-            pattern: '<this>'
-            class: com.liddev.teleportmadness.Commands.HomeShow.class
-            perm: teleportMadness.home.show
-            console: false
-            desc:
-            help:
-        showother:
-            alias:
-                - show
-            pattern: '<this> <o>'
-            class: com.liddev.teleportmadness.Commands.HomeShow.class
-            perm: teleportMadness.home.show.other
-            console: false
-            desc:
-            help:
-        invite:
-            alias:
-                - invite
-                - i
-            pattern: '<this> <o> [o]'
-            class: com.liddev.teleportmadness.Commands.HomeShow.class
-            perm: teleportMadness.home.invite
-            console: false
-            desc:
-            help:
-        accept:
-            alias:
-                - accept
-                - a
-            pattern: '<this> [o]'
-            class: com.liddev.teleportmadness.Commands.HomeShow.class
-            perm: teleportMadness.home.accept
-            console: false
-            desc:
-            help:
-        world:
-            alias:
-                - world
-                - w
-            pattern: '<this> [co]'
-            class: com.liddev.teleportmadness.Commands.WorldHome.class
-            perm: teleportMadness.home.world
-            console: false
-            desc:
-            help:
-            sub:
-                
-        server:
-            alias:
-                - server
-                - s
-            pattern: '<this> [co]'
-            class: com.liddev.teleportmadness.Commands.ServerHome.class
-            perm: teleportMadness.home.server
-            console: false
-            desc:
-            help:
-            sub:
-                
+                removeother:
+                    alias:
+                        - remove
+                        - rm
+                        - -
+                    pattern: '<super> <this> <str> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeRemove.class
+                    perm: teleportMadness.home.remove.other
+                    console: true
+                    desc:
+                    help:
+                default:
+                    alias:
+                        - default
+                        - d
+                    pattern: '<super> <this>'
+                    desc:
+                    help:
+                    sub:
+                        set:
+                            alias:
+                                - set
+                                - add
+                                - +
+                            pattern: '<super> <this> [str]'
+                            class: com.liddev.teleportmadness.Commands.HomeDefaultSet.class
+                            perm: teleportMadness.home.default.set
+                            console: false
+                            desc:
+                            help:
+                        remove:
+                            alias:
+                                - remove
+                                - rm
+                                - -
+                            pattern: '<super> <this>'
+                            class: com.liddev.teleportmadness.Commands.HomeDefaultRemove.class
+                            perm: teleportMadness.home.default.remove
+                            console: false
+                            desc:
+                            help:
+                trust:
+                    alias:
+                        - trust
+                        - t
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeTrust.class
+                    perm: teleportMadness.home.trust
+                    console: false
+                    desc:
+                    help:
+                untrust:
+                    alias:
+                        - untrust
+                        - ut
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeUntrust.class
+                    perm: teleportMadness.home.untrust
+                    console: false
+                    desc:
+                    help:
+                allow:
+                    alias:
+                        - allow
+                        - a
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeAllow.class
+                    perm: teleportMadness.home.allow
+                    console: false
+                    desc:
+                    help:
+                deny:
+                    alias:
+                        - deny
+                        - d
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeDeny.class
+                    perm: teleportMadness.home.deny
+                    console: false
+                    desc:
+                    help:
+                trusted:
+                    alias:
+                        - trusted
+                        - td
+                    pattern: '<super> <this>'
+                    class: com.liddev.teleportmadness.Commands.HomeTrusted.class
+                    perm: teleportMadness.home.trusted
+                    console: false
+                    desc:
+                    help:
+                list:
+                    alias:
+                        - list
+                        - ls
+                        - l
+                    pattern: '<super> <this>'
+                    class: com.liddev.teleportmadness.Commands.HomeList.class
+                    perm: teleportMadness.home.list
+                    console: false
+                    desc:
+                    help:
+                listother:
+                    alias:
+                        - list
+                        - ls
+                        - l
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeList.class
+                    perm: teleportMadness.home.list.other
+                    console: true
+                    desc:
+                    help:
+                show:
+                    alias:
+                        - show
+                    pattern: '<super> <this>'
+                    class: com.liddev.teleportmadness.Commands.HomeShow.class
+                    perm: teleportMadness.home.show
+                    console: false
+                    desc:
+                    help:
+                showother:
+                    alias:
+                        - show
+                    pattern: '<super> <this> <str>'
+                    class: com.liddev.teleportmadness.Commands.HomeShow.class
+                    perm: teleportMadness.home.show.other
+                    console: false
+                    desc:
+                    help:
+                invite:
+                    alias:
+                        - invite
+                        - i
+                    pattern: '<super> <this> <str> [str]'
+                    class: com.liddev.teleportmadness.Commands.HomeShow.class
+                    perm: teleportMadness.home.invite
+                    console: false
+                    desc:
+                    help:
+                accept:
+                    alias:
+                        - accept
+                        - a
+                    pattern: '<super> <this> [str]'
+                    class: com.liddev.teleportmadness.Commands.HomeShow.class
+                    perm: teleportMadness.home.accept
+                    console: false
+                    desc:
+                    help:
+#                world:
+#                    alias:
+#                        - world
+#                        - w
+#                    pattern: '<super> <this> [str]'
+#                    class: com.liddev.teleportmadness.Commands.WorldHome.class
+#                    perm: teleportMadness.home.world
+#                    console: false
+#                    desc:
+#                    help:
+#                    sub:
+#                        
+#                server:
+#                    alias:
+#                        - server
+#                        - s
+#                    pattern: '<super> <this> [str]'
+#                    class: com.liddev.teleportmadness.Commands.ServerHome.class
+#                    perm: teleportMadness.home.server
+#                    console: false
+#                    desc:
+#                    help:
+#                    sub:
+#                        
