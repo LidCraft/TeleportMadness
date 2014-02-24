@@ -1,4 +1,4 @@
-name: Teleport Madness
+name: TeleportMadness
 main: com.liddev.teleportmadness.TeleportMadness
 load: POSTWORLD
 version: 0.01
@@ -7,26 +7,7 @@ author: Renlar
 database: false
 description: teleportMadness home commands integrated with grief preventions and multiverse.
 depend: [Multiverse-Core, GriefPrevention]
-prefix: mad
-commands:
-  mad:
-    aliases: [/tm]
-    description: Access to Teleport madness.  /tm help for a list of commands.  
-      /tm [command] help for help with a specific command.  Caution may cause 
-      madness, insanity, or flying pigs.
-    usage: /<command> [command] [options]
-    permission: teleportMadness.mad
-    permission-message: You are not mad enough to use this command.  
-      Try re-applying once you have seen a flying pig.
-  home:
-    aliases: [/h]
-    description: The home portion of Teleport Madness.  Type "/home help" for a 
-      list of home related commands or "/home [command] help" for help with a 
-      specific command. 
-    usage: /<command> [command] [options]
-    permission: teleportMadness.home
-    permission-message: Home? You can't go home, your mad! Come back after your 
-      therapy session.
+prefix: tm
 permissions:
   teleportMadness.*:
     description: Full access to Teleport Madness.

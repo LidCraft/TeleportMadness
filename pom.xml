@@ -4,7 +4,7 @@
 
     <groupId>com.liddev</groupId>
     <artifactId>TeleportMadness</artifactId>
-    <version>1.0-Alpha</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>TeleportMadness</name>
@@ -40,6 +40,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <!--<minimizeJar>true</minimizeJar>-->
                             <artifactSet>
                                 <includes>
                                     <include>org.neodatis.odb</include>
@@ -48,14 +49,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -69,7 +62,7 @@
         <dependency>
             <groupId>org.neodatis.odb</groupId>
             <artifactId>neodatis-odb</artifactId>
-            <version>1.9.21.679</version>
+            <version>1.9.30.689</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -80,7 +73,13 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.1-SNAPSHOT</version>
+            <version>1.7.2-R0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.7.2-R0.3</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>me.ryanhamshire</groupId>

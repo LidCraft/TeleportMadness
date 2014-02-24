@@ -21,10 +21,12 @@ import org.bukkit.util.FileUtil;
  */
 public class FileManager {
 
+    private final String configFileName = "config.yml";
+    private final String commandFileName = "commands.yml";
     private final File configFile;
-    private YamlConfiguration config;
     private final File commandFile;
-    private YamlConfiguration command;
+    private YamlConfiguration config;
+    private YamlConfiguration commands;
     private final TeleportMadness mad;
 
     public FileManager(TeleportMadness mad) {
@@ -32,23 +34,22 @@ public class FileManager {
         if (!mad.getDataFolder().exists()) {
             mad.getDataFolder().mkdir();
         }
-        configFile = new File(mad.getDataFolder(), "config.yml");
-        commandFile = new File(mad.getDataFolder(), "command.yml");
+        configFile = new File(mad.getDataFolder(), configFileName);
+        commandFile = new File(mad.getDataFolder(), commandFileName);
     }
 
     public void loadConfig() {
-        if (!commandFile.exists()) {
-            InputStream jarURL = FileManager.class.getResourceAsStream("/config.yml");
-            copy(jarURL, configFile);
+        if (!configFile.exists()) {
+            copy(mad.getResource(configFileName), configFile);
         }
         config = new YamlConfiguration();
         config.options().pathSeparator('/');
         try {
             config.load(configFile);
         } catch (IOException ex) {
-            IOExceptionHandler(ex, "config.yml");
+            IOExceptionHandler(ex, configFileName);
         } catch (InvalidConfigurationException ex) {
-            InvalidConfigExceptionHandler(ex, "config.yml");
+            InvalidConfigExceptionHandler(ex, configFileName);
         }
     }
 
@@ -70,27 +71,26 @@ public class FileManager {
         }
     }
 
-    public void loadCommand() {
+    public void loadCommands() {
         if (!commandFile.exists()) {
-            InputStream jarURL = FileManager.class.getResourceAsStream("/config.yml");
-            copy(jarURL, commandFile);
+            copy(mad.getResource(commandFileName), commandFile);
         }
-        command = new YamlConfiguration();
-        command.options().pathSeparator('/');
+        commands = new YamlConfiguration();
+        commands.options().pathSeparator('/');
         try {
-            command.load(configFile);
+            commands.load(commandFile);
         } catch (IOException ex) {
-            IOExceptionHandler(ex, "command.yml");
+            IOExceptionHandler(ex, commandFileName);
         } catch (InvalidConfigurationException ex) {
-            InvalidConfigExceptionHandler(ex, "command.yml");
+            InvalidConfigExceptionHandler(ex, commandFileName);
         }
     }
 
     public YamlConfiguration getCommands() {
-        if (command == null) {
-            loadCommand();
+        if (commands == null) {
+            loadCommands();
         }
-        return command;
+        return commands;
     }
 
     private void copy(InputStream in, File file) {
@@ -103,8 +103,8 @@ public class FileManager {
             }
             out.close();
             in.close();
-        } catch (IOException e) {
-            mad.getLogger().log(Level.SEVERE, "Failed to copy {0} to plugin directory.\nPlease ensure bukkit has permission to read and write to all files in the plugin directory.", file);
+        } catch (IOException ex) {
+            mad.getLogger().log(Level.SEVERE, "Failed to copy {0} to plugin directory.\nPlease ensure bukkit has permission to read and write to all files in the plugin directory.\nError Message:\n{1}", new Object[]{file, ex});
         }
     }
 

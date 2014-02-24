@@ -141,8 +141,7 @@ public class DataManager {
         WorldData data = null;
         if (worlds.size() > 0) {
             data = worlds.getFirst();
-        }else
-        if (data == null) {
+        } else if (data == null) {
             data = new WorldData();
             data.setName(world.getName());
         }
@@ -156,7 +155,7 @@ public class DataManager {
     public void loadServerJumps() {
         IQuery query = new CriteriaQuery(JumpPoint.class, Where.equal("type", JumpType.GLOBAL));
         Objects<JumpPoint> points = db.getObjects(query);
-            serverHome = null;
+        serverHome = null;
         if (points.size() > 0) {
             serverHome = points.getFirst();
         }
