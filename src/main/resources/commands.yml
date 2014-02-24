@@ -17,8 +17,9 @@ mad:
     class: com.liddev.teleportmadness.Commands.Mad
     perm: teleportMadness.mad
     console: false
-    desc: 
-    help: 
+    root: true
+    desc:
+    help:
     sub:
 #        reload:
 #            alias:
@@ -28,6 +29,7 @@ mad:
 #            class: com.liddev.teleportmadness.Commands.Reload
 #            perm: teleportMadness.reload
 #            console: true
+#			 root: false
 #            desc:
 #            help:
         home:
@@ -38,8 +40,9 @@ mad:
             class: com.liddev.teleportmadness.Commands.Home
             perm: teleportMadness.home
             console: false
-            desc: 
-            help: 
+            root: true
+            desc:
+            help:
             sub:
                 set:
                     alias:
@@ -50,6 +53,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeSet
                     perm: teleportMadness.home.set
                     console: false
+                    root: false
                     desc:
                     help:
                 setother:
@@ -61,6 +65,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeSet
                     perm: teleportMadness.home.set.other
                     console: false
+                    root: false
                     desc:
                     help:
                 remove:
@@ -72,6 +77,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeRemove
                     perm: teleportMadness.home.remove
                     console: false
+                    root: false
                     desc:
                     help:
                 removeother:
@@ -83,6 +89,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeRemove
                     perm: teleportMadness.home.remove.other
                     console: true
+                    root: false
                     desc:
                     help:
                 default:
@@ -102,6 +109,7 @@ mad:
                             class: com.liddev.teleportmadness.Commands.HomeDefaultSet
                             perm: teleportMadness.home.default.set
                             console: false
+                            root: false
                             desc:
                             help:
                         remove:
@@ -113,6 +121,7 @@ mad:
                             class: com.liddev.teleportmadness.Commands.HomeDefaultRemove
                             perm: teleportMadness.home.default.remove
                             console: false
+                            root: false
                             desc:
                             help:
                 trust:
@@ -123,6 +132,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeTrust
                     perm: teleportMadness.home.trust
                     console: false
+                    root: false
                     desc:
                     help:
                 untrust:
@@ -133,6 +143,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeUntrust
                     perm: teleportMadness.home.untrust
                     console: false
+                    root: false
                     desc:
                     help:
                 allow:
@@ -143,6 +154,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeAllow
                     perm: teleportMadness.home.allow
                     console: false
+                    root: false
                     desc:
                     help:
                 deny:
@@ -153,6 +165,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeDeny
                     perm: teleportMadness.home.deny
                     console: false
+                    root: false
                     desc:
                     help:
                 trusted:
@@ -163,6 +176,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeTrusted
                     perm: teleportMadness.home.trusted
                     console: false
+                    root: false
                     desc:
                     help:
                 list:
@@ -174,6 +188,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeList
                     perm: teleportMadness.home.list
                     console: false
+                    root: false
                     desc:
                     help:
                 listother:
@@ -185,6 +200,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeList
                     perm: teleportMadness.home.list.other
                     console: true
+                    root: false
                     desc:
                     help:
                 show:
@@ -194,6 +210,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.show
                     console: false
+                    root: false
                     desc:
                     help:
                 showother:
@@ -203,6 +220,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.show.other
                     console: false
+                    root: false
                     desc:
                     help:
                 invite:
@@ -213,6 +231,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.invite
                     console: false
+                    root: false
                     desc:
                     help:
                 accept:
@@ -223,6 +242,7 @@ mad:
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.accept
                     console: false
+                    root: false
                     desc:
                     help:
 #                world:
@@ -233,10 +253,11 @@ mad:
 #                    class: com.liddev.teleportmadness.Commands.WorldHome
 #                    perm: teleportMadness.home.world
 #                    console: false
+#					 root: false
 #                    desc:
 #                    help:
 #                    sub:
-#                        
+#
 #                server:
 #                    alias:
 #                        - server
@@ -245,7 +266,8 @@ mad:
 #                    class: com.liddev.teleportmadness.Commands.ServerHome
 #                    perm: teleportMadness.home.server
 #                    console: false
+#                    root: false
 #                    desc:
 #                    help:
 #                    sub:
-#                        
+#

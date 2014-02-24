@@ -1,8 +1,8 @@
 package com.liddev.teleportmadness.Commands;
 
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.PlayerData;
+import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,10 +20,10 @@ public class HomeRemove extends MadCommand {
         if (args.length == 2) {
             player = args[0];
             home = args[1];
-            data = DataManager.get().getPlayerData(((Player) sender).getName());
+            data = TeleportMadness.getDataManager().getPlayerData(((Player) sender).getName());
             if (data == null) {
                 sender.sendMessage(player + " is not online, attempting to look up in database.");
-                data = DataManager.get().getPlayer(player);
+                data = TeleportMadness.getDataManager().getPlayer(player);
             }
             if (data == null) {
                 sender.sendMessage(player + " was not found in the database, name must be exact for database lookup to succeed.");
@@ -31,7 +31,7 @@ public class HomeRemove extends MadCommand {
             }
         } else {
             home = args[0];
-            data = DataManager.get().getPlayerData(((Player) sender).getName());
+            data = TeleportMadness.getDataManager().getPlayerData(((Player) sender).getName());
         }
         if (!data.removeHome(args[1])) {
             sender.sendMessage("Home, " + home + " was not found.");

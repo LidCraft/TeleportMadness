@@ -24,20 +24,20 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class TeleportMadness extends JavaPlugin {
 
-    private PlayerListener playerListener;
-    private ClaimListener claimListener;
-    private WorldListener worldListener;
-    private DataManager dataManager;
-    private FileManager fileManager;
-    private CommandManager commandManager;
-    private static TeleportMadness active;
+    private static PlayerListener playerListener;
+    private static ClaimListener claimListener;
+    private static WorldListener worldListener;
+    private static DataManager dataManager;
+    private static FileManager fileManager;
+    private static CommandManager commandManager;
+    private static TeleportMadness instance;
     private static SimpleCommandMap cmap;
 
-    public PluginDescriptionFile dsc;
+    private static PluginDescriptionFile dsc;
 
     @Override
     public void onEnable() {
-        active = this;
+        instance = this;
         dsc = getDescription();
         getLogger().log(Level.INFO, "Loading {0}.", new Object[]{dsc.getFullName()});
         if (!checkDepend()) {
@@ -50,12 +50,12 @@ public class TeleportMadness extends JavaPlugin {
         setupListeners();
 //TODO: divide plugin into a module for each dependency where possible and only enable the portions which have their dependencies.
 
-        getLogger().log(Level.INFO, "{0}: Load Complete.", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.INFO, "{0}: Load Complete.", new Object[]{dsc.getName()});
     }
 
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "{0}: Saving data!", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.INFO, "{0}: Saving data!", new Object[]{dsc.getName()});
         dataManager.saveAll();
 
         clearMemory();
@@ -87,21 +87,25 @@ public class TeleportMadness extends JavaPlugin {
         return true;
     }
 
-    public DataManager getDataManager() {
+    public static DataManager getDataManager() {
         return dataManager;
     }
 
-    public FileManager getFileManager() {
+    public static FileManager getFileManager() {
         return fileManager;
     }
 
-    public CommandManager getCommandManager() {
+    public static CommandManager getCommandManager() {
         return commandManager;
     }
 
-    public static TeleportMadness get() {
-        return active;
-    }
+	public static TeleportMadness getInstance(){
+		return instance;
+	}
+
+	public static PluginDescriptionFile getProp(){
+		return dsc;
+	}
 
     public void register(List<PluginCommand> commands) {
         for (PluginCommand command : commands) {
@@ -114,7 +118,7 @@ public class TeleportMadness extends JavaPlugin {
     }
 
     private void clearMemory() {
-        getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getName()});
         playerListener = null;
         dataManager.clearMemory();
         dataManager.closeDatabase();
@@ -122,9 +126,9 @@ public class TeleportMadness extends JavaPlugin {
         claimListener = null;
         playerListener = null;
         worldListener = null;
-        active = null;
+        instance = null;
 
-        getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getFullName()});
+        getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getName()});
         dsc = null;
     }
 
@@ -142,7 +146,7 @@ public class TeleportMadness extends JavaPlugin {
 
         fileManager = new FileManager(this);
         fileManager.loadCommands();
-        //fileManager.loadConfig();
+        fileManager.loadConfig();
 
         commandManager = new CommandManager(this);
     }

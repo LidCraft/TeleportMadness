@@ -1,7 +1,7 @@
 name: TeleportMadness
 main: com.liddev.teleportmadness.TeleportMadness
 load: POSTWORLD
-version: 0.01
+version: 0.1.0
 website: liddev.com
 author: Renlar
 database: false
@@ -14,8 +14,8 @@ permissions:
     default: op
     children:
       teleportMadness.home.*: true
-    
-    
+
+
   teleportMadness.home.*:
     description: Access to all Home related permissions.
     default: false
@@ -51,18 +51,18 @@ permissions:
       teleportMadness.home.info.player: true
       teleportMadness.home.limit: true
       teleportMadness.home.limit.default: true
-      
+
       ####Player Home Permissions####
   teleportMadness.home:
-    description: Allows player to teleport their own homes.  
+    description: Allows player to teleport their own homes.
       Command-/home [name]
     default: false
   teleportMadness.home.list:
     description: View your own home list.
-      Command-/home list 
+      Command-/home list
     default: false
   teleportMadness.home.invite:
-    description:  Invite another player to [home] or your nearest home if [home] is empty. 
+    description:  Invite another player to [home] or your nearest home if [home] is empty.
       Command-/home invite <player> [home]
     default: false
   teleportMadness.home.accept:
@@ -73,17 +73,17 @@ permissions:
     description: Refuse an invite to [player]'s home or to the most recient invite you recievied if [player] is empty.
       Command-/home refuse [player]
     default: true
-    
+
   teleportMadness.home.set:
-    description: Creates a new home.  
+    description: Creates a new home.
       Command-/home set <name>
     default: false
   teleportMadness.home.remove:
-    description: Remove a home.  
+    description: Remove a home.
       Command-/home remove <name>
     default: false
   teleportMadness.home.default.set:
-    description: Set your default home, this is where you go on /home with no arguments 
+    description: Set your default home, this is where you go on /home with no arguments
       if home does not already exist it will be created at the current position.
       Command-/home default set <name>
     default: false
@@ -96,87 +96,87 @@ permissions:
       typing command toggles it on and off.
       Command-/home show
     default: false
-    
+
     ####Admin Home Permissions####
   teleportMadness.home.other:
-    description:  Teleport to other players homes. 
+    description:  Teleport to other players homes.
       Command-/home <player> [home]
     default: false
   teleportMadness.home.bypass:
-    description: Bypass permissions at homelocation, if your or someone else's home is somewhere where homes 
+    description: Bypass permissions at homelocation, if your or someone else's home is somewhere where homes
       are not allowed you will still be able to teleport to it with this permission.
     default: false
   teleportMadness.home.list.other:
-    description: View other player's homes. 
+    description: View other player's homes.
       Command-/home list <player>
     default: false
-    
+
   teleportMadness.home.set.other:
-    description: Set a home for a player. Does not count against the player's maximum 
+    description: Set a home for a player. Does not count against the player's maximum
       home number also does not respect worlds or locations where homes are not allowed.
       Command-/home set <player> <name>
     default: false
   teleportMadness.home.remove.other:
-    description: Remove a home owned by player.  
+    description: Remove a home owned by player.
       Command-/home remove <player> <home>
     default: false
   teleportMadness.home.world.show.other:
     description: View all home of <player> in current world as signs with floating water above typing command toggles it on and off.
       Command-/home show <player>
     default: false
-    
-    
+
+
     ####Claims Home Permissions####
   teleportMadness.home.claim.trust:
-    description: Allows <player> to set homes in this claim if not standing in a 
-      claim adds global trust.  
+    description: Allows <player> to set homes in this claim if not standing in a
+      claim adds global trust.
       Command-/home trust <player>
     default: false
   teleportMadness.home.claim.untrust:
-    description:  Blocks <player> from setting homes in this claim if not standing in a 
-      claim removes permission from player in all your claims.  
+    description:  Blocks <player> from setting homes in this claim if not standing in a
+      claim removes permission from player in all your claims.
       Command-/home untrust <player>
     default: false
   teleportMadness.home.claim.trusted:
-    description: Lists all groups and players who have explicit permission to set 
-      homes in the claim your are standing in if not standing in one lists players 
-      and groups who are trusted on all your claims.  
+    description: Lists all groups and players who have explicit permission to set
+      homes in the claim your are standing in if not standing in one lists players
+      and groups who are trusted on all your claims.
       Command-/home trusted
     default: false
   teleportMadness.home.claim.allow:
-    description: Allows a user with <permission level> or above to set homes in the current 
-      claim. 
+    description: Allows a user with <permission level> or above to set homes in the current
+      claim.
       Command-/home allow <permissions level>
     default: false
   teleportMadness.home.claim.deny:
-    description: Deny a user with <permission level> or below to set homes in the current 
-      claim.  
+    description: Deny a user with <permission level> or below to set homes in the current
+      claim.
       Command-/home deny <permissions level>
     default: false
-    
+
     ####Admin Claim Permissions####
   teleportMadness.home.claim.trust.admin:
     description: Gives admin permission to allow <player> to set homes in this claim.
       Command-/home trust <player>
     default: false
   teleportMadness.home.claim.untrust.admin:
-    description:  Gives admin permission to blocks <player> from setting homes in this claim.  
+    description:  Gives admin permission to blocks <player> from setting homes in this claim.
       Command-/home untrust <player>
     default: false
   teleportMadness.home.claim.allow.admin:
-    description: Allows a user with <permission level> or above to set homes in the current 
-      claim whether or not the caller owns the claim.   Permission groups from your 
+    description: Allows a user with <permission level> or above to set homes in the current
+      claim whether or not the caller owns the claim.   Permission groups from your
       permission manager can be used as well.
       Command-/home allow <permission level>
     default: false
   teleportMadness.home.claim.deny.admin:
-    description: Deny a user with <permission level> or below to set homes in the current 
-      claim whether or not the caller owns the claim.  Permission groups from your 
+    description: Deny a user with <permission level> or below to set homes in the current
+      claim whether or not the caller owns the claim.  Permission groups from your
       permission manager can be used as well.
       Command-/home deny <permission level>
-    default: false 
-    
-    
+    default: false
+
+
     ####world home permissions####
     teleportMadness.home.world:
     description: Teleport to the world home.
@@ -195,26 +195,26 @@ permissions:
       Command-/home world remove
     default: false
   teleportMadness.home.world.allow:
-    description: Allows a user with <permission level> or above to set personal homes in 
+    description: Allows a user with <permission level> or above to set personal homes in
       this world xor [world].
       Command-/home world allow <permission level> [world]
     default: false
   teleportMadness.home.world.deny:
-    description: Deny a user with <permission level> or below to set personal homes in this 
+    description: Deny a user with <permission level> or below to set personal homes in this
       world xor [world].
       Command-/home world deny <permission level> [world]
     default: false
   teleportMadness.home.world.trust:
-    description: Allows <player> to set personal homes in this world xor [world]. 
+    description: Allows <player> to set personal homes in this world xor [world].
       Command-/home world trust <player> [world]
     default: false
   teleportMadness.home.world.untrust:
-    description:  Blocks <player> from setting personal homes in this world xor [world].  
+    description:  Blocks <player> from setting personal homes in this world xor [world].
       Command-/home world untrust <player> [world]
     default: false
   teleportMadness.home.world.trusted:
     description: Lists all permission groups and players who have explicit permission to set personal
-      homes in this world xor [world].  
+      homes in this world xor [world].
       Command-/home world trusted [world]
     default: false
   teleportMadness.home.world.set.limit:
@@ -222,7 +222,7 @@ permissions:
       Command-/home world limit <limit> [world]
     default: false
   teleportMadness.home.world.limit:
-    description: view the default home limit in current world xor [world]. 
+    description: view the default home limit in current world xor [world].
       Command-/home world limit [world]
     default: false
   teleportMadness.home.world.show:
@@ -230,15 +230,15 @@ permissions:
       Command-/home world show
     default: false
   teleportMadness.home.world.player.set.limit:
-    description: Set the home limit for <player> in current world xor [world]. 
+    description: Set the home limit for <player> in current world xor [world].
       Command-/home world limit <player> <limit> [world]
     default: false
   teleportMadness.home.world.player.limit:
     description: View the home limit for <player> in current world xor [world]
       Command-/home world limit <player> [world]
     default: false
-    
-    
+
+
     ####Server Home Permissions####
   teleportMadness.home.server:
     description: Teleport to the server home.
@@ -253,7 +253,7 @@ permissions:
       Command-/home server set [name]
     default: false
   teleportMadness.home.server.limit:
-    description: View the server wide default home limit. 
+    description: View the server wide default home limit.
       Command-/home server limit
     default: false
   teleportMadness.home.server.limit.set:
@@ -272,24 +272,24 @@ permissions:
     description: Displays the global home in the home list.
       Command-/home list
     default: false
-    
+
     ####Group Permissions####
   teleportMadness.group.limit:
     description: Set the default home limit for players in permission group <group>.
       Command-/home group limit <group> <limit>
     default: false
-    
+
     ####Info Permissions####
   teleportMadness.home.info:
-    description: Display Teleport Madness Home command info in the current world. 
+    description: Display Teleport Madness Home command info in the current world.
       Command-/home info
     default: false
   teleportMadness.home.info.player:
-    description: Display Teleport Madness Home command info for [player].  
+    description: Display Teleport Madness Home command info for [player].
       Command-/home info [player]
     default: false
-    
-    
+
+
     ####Future Commands/Permissions?####
 #  teleportMadness.home.cooldown:
 #    description: set the cooldown for /home command
@@ -315,29 +315,29 @@ permissions:
 #  teleportMadness.home.set.warmup.bypass:
 #    description: set the warmup for /home set command
 #    default: false
-      
-  
+
+
 #  teleportMadness.block:
-#    description: Block Teleport Madness command/s for everyone but admin. 
+#    description: Block Teleport Madness command/s for everyone but admin.
 #      Leave [command/s] blank to block all commands or do multiple commands
 #      seperated by spaces.
 #      Command-/block [command/s]
 #    default: false
 #  teleportMadness.block.player:
-#    description: Block a player from using Teleport Madness command/s. 
-#      Leave [command/s] blank to block all commands or do multiple commands 
+#    description: Block a player from using Teleport Madness command/s.
+#      Leave [command/s] blank to block all commands or do multiple commands
 #      seperated by spaces.
 #      Command-/block <player> [command/s]
 #    default: false
 #    teleportMadness.unblock:
-#    description: Unblock Teleport Madness command/s for everyone. 
-#      Leave [command/s] blank to unblock all commands or do multiple commands 
+#    description: Unblock Teleport Madness command/s for everyone.
+#      Leave [command/s] blank to unblock all commands or do multiple commands
 #      seperated by spaces.
 #      Command-/unblock [command/s]
 #    default: false
 #  teleportMadness.unblock.player:
 #    description: unblock a player from using Teleport Madness command/s.
-#      Leave [command/s] blank to unblock all commands or do multiple commands 
+#      Leave [command/s] blank to unblock all commands or do multiple commands
 #      seperated by spaces.
 #      Command-/unblock <player> [command/s]
 #    default: false

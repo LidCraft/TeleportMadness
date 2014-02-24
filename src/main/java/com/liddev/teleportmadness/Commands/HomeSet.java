@@ -7,9 +7,9 @@ package com.liddev.teleportmadness.Commands;
 
 import com.liddev.teleportmadness.JumpPoint;
 import com.liddev.teleportmadness.JumpType;
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.PlayerData;
+import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class HomeSet extends MadCommand {
             }
         }
         JumpPoint j;
-        PlayerData data = DataManager.get().getPlayerData(p);
+        PlayerData data = TeleportMadness.getDataManager().getPlayerData(p);
         if (args.length == 1) {
             if (data.getHomeLimit() <= data.getHomeCount() || data.getWorldLimit(p.getLocation().getWorld()) <= data.getWorldCount(p.getLocation().getWorld())) {
                 StringBuilder b = new StringBuilder();
@@ -49,7 +49,7 @@ public class HomeSet extends MadCommand {
                     return false;
                 }
             }
-            if (!DataManager.get().loadClaimData(p.getLocation()).hasPermission(p)) {
+            if (!TeleportMadness.getDataManager().loadClaimData(p.getLocation()).hasPermission(p)) {
                 sender.sendMessage("You do not have permission to set a home in this claim.");
                 return false;
             }

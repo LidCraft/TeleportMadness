@@ -1,8 +1,8 @@
 package com.liddev.teleportmadness.Commands;
 
 import com.liddev.teleportmadness.JumpPoint;
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.MadCommand;
+import com.liddev.teleportmadness.TeleportMadness;
 import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -22,13 +22,13 @@ public class HomeList extends MadCommand {
         StringBuilder builder = new StringBuilder();
         if (args.length == 0) {
             if (sender.hasPermission("teleportMadness.home.server.list")) {
-                builder.append("Server Home: ").append(DataManager.get().getServerHome().toString()).append("\n");
+                builder.append("Server Home: ").append(TeleportMadness.getDataManager().getServerHome().toString()).append("\n");
             }
             if (sender.hasPermission("teleportMadness.home.world.list")) {
                 builder.append("World Homes: \n");
                 for (World world : Bukkit.getServer().getWorlds()) {
-                    if (DataManager.get().getWorldData(world).getHome() != null) {
-                        builder.append(world.getName()).append(": ").append(DataManager.get().getWorldData(world).getHome().toString()).append("\n");
+                    if (TeleportMadness.getDataManager().getWorldData(world).getHome() != null) {
+                        builder.append(world.getName()).append(": ").append(TeleportMadness.getDataManager().getWorldData(world).getHome().toString()).append("\n");
                     }
                 }
             }
@@ -50,7 +50,7 @@ public class HomeList extends MadCommand {
         for (World w : list) {
             UUID worldUUID = w.getUID();
             builder.append(w.getName()).append(": ");
-            for (JumpPoint j : DataManager.get().getPlayerData(player).getHomes()) {
+            for (JumpPoint j : TeleportMadness.getDataManager().getPlayerData(player).getHomes()) {
                 if (j.getWorldUUID().equals(worldUUID)) {
                     builder.append(j.toString()).append(", ");
                 }

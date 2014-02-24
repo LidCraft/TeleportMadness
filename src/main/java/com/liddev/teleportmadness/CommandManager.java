@@ -27,7 +27,9 @@ public class CommandManager implements CommandExecutor {
         this.mad = mad;
         this.commandFile = mad.getFileManager().getCommands();
         commandTree = new Node<CommandData>();
+		mad.getLogger().log(Level.INFO, "Building command structure.");
         generateTree(mad.getFileManager().getCommands(), commandTree);
+		mad.getLogger().log(Level.INFO, "Registering commands with bukkit.");
         registerRootCommands(commandTree);
     }
 
@@ -41,6 +43,7 @@ public class CommandManager implements CommandExecutor {
             command.setDescription(d.getDescription());
             command.setUsage(d.getUsageMessage());
             System.out.println("Command: " + command.toString());
+			mad.getLogger().log(Level.FINE, "Registering root command: {0}{1}{2}{3}", new Object[]{d.getName()});
         }
         //register the commands.
         mad.register(commands);
@@ -68,11 +71,11 @@ public class CommandManager implements CommandExecutor {
         List<CommandData> commands = new ArrayList<CommandData>();
         List<Integer> aliasPosition = new ArrayList<Integer>();
         int currentStatement = 0;
-        Node previous = current;
-        Node node;
+        Node<CommandData> previous = current;
+        Node<CommandData> node;
         for (int i = 0; i < current.getChildren().size(); i++) {
             node = current.getChildren().get(i);
-            CommandData c = (CommandData) node.getData();
+            CommandData c = node.getData();
             List<String> aliases = c.getAliases();
             for (String alias : aliases) {
                 if (alias.equalsIgnoreCase(statements[currentStatement]) && c.getCommand() != null) {
@@ -93,7 +96,7 @@ public class CommandManager implements CommandExecutor {
 
         //Select the first command match from the list of commands starting at the end of the list.
         for (int j = commands.size() - 1; j >= 0; j--) {
-            CommandData command = (CommandData) commands.get(j);
+            CommandData command = commands.get(j);
             ParseTree argsTree = command.getPattern();
             String[] list = new String[statements.length - 1 - aliasPosition.get(j)];
             for (int k = statements.length - 1, m = 0; k > aliasPosition.get(j); k--, m++) {
@@ -104,10 +107,6 @@ public class CommandManager implements CommandExecutor {
             }
         }
         return null;
-    }
-
-    public MadCommand getCommand(String s) {
-        throw new UnsupportedOperationException();
     }
 
     public boolean hasPermission(CommandSender sender) {
@@ -126,10 +125,10 @@ public class CommandManager implements CommandExecutor {
         Set<String> keys = commands.getKeys(false);
         for (String key : keys) {
             ConfigurationSection commandSection = commands.getConfigurationSection(key);
-            CommandData data = new CommandData(commandSection.getName(), commandSection);
+            CommandData data = new CommandData(commandSection);
             Node<CommandData> node = new Node<CommandData>(data);
             commandTree.connectChild(node);
-            if (node.getData().getPattern().isRootChild()) {
+            if (commandSection.getBoolean("root") && (commandTree.getParent() != null)) {
                 this.commandTree.addChild(node);
             }
             if (commandSection.contains("sub")) {
@@ -141,18 +140,16 @@ public class CommandManager implements CommandExecutor {
 
     private class CommandData {
 
-        private List aliases;
+        private List<String> aliases;
         private ParseTree pattern;
         private MadCommand madCommand;
         private String permission;
         private boolean console;
         private String description;
         private String help;
-        private String name;
         private String usageMessage;
 
-        public CommandData(String name, ConfigurationSection commandConfig) {
-            this.name = name;
+        public CommandData(ConfigurationSection commandConfig) {
             aliases = commandConfig.getStringList("alias");
             pattern = new ParseTree(commandConfig.getString("pattern"), commandConfig);
             String className = commandConfig.getString("class");
@@ -173,7 +170,7 @@ public class CommandManager implements CommandExecutor {
             help = commandConfig.getString("help");
         }
 
-        public List getAliases() {
+        public List<String> getAliases() {
             return aliases;
         }
 
@@ -206,7 +203,7 @@ public class CommandManager implements CommandExecutor {
         }
 
         public String getName() {
-            return name;
+            return aliases.get(0);
         }
     }
 
@@ -229,15 +226,18 @@ public class CommandManager implements CommandExecutor {
         public static final String[] groups = {required, optional};
         public static final String[] operators = {or, and, xor, not, exclude, include};
         public static final String[] types = {parent, string, integer, floatingPoint, bool, tag};
+		public static final String T = "t";
+		public static final String TRUE = "true";
+		public static final String F = "f";
+		public static final String FALSE = "false";
         private final Node<String> root;
         private final ConfigurationSection yaml;
         private final String pattern;
-        private boolean rootCommand = true;  //TODO: FIX all commands are currently being registered as root.
 
         public ParseTree(String string, ConfigurationSection yaml) {
             this.yaml = yaml;
             this.pattern = string.replaceAll("\\s", "");
-            this.root = new Node();
+            this.root = new Node<String>();
             expandNodeGroups();
         }
 
@@ -253,30 +253,26 @@ public class CommandManager implements CommandExecutor {
             return yaml;
         }
 
-        public boolean isRootChild() {
-            return rootCommand;
-        }
-
         public boolean matches(String[] args) { //TODO: update to a more inteligent matcher. Add support for all operators.
-            List<Node<String>> pattern = root.getChildren();
+            List<Node<String>> patternTree = root.getChildren();
             int req = 0, opt = 0;
-            for (Node n : pattern) {
-                if (n.getData().equals(req)) {
+            for (Node<String> n : patternTree) {
+                if (n.getData().equals(required)) {
                     req++;
-                } else if (n.getData().equals(opt)) {
+                } else if (n.getData().equals(optional)) {
                     opt++;
                 }
             }
             if (args.length < req || args.length > (req + opt)) {
                 return false;
             }
-            for (int i = 0, j = 0; i < args.length && j < pattern.size();) {
+            for (int i = 0, j = 0; i < args.length && j < patternTree.size();) {
                 String arg = args[i];
 
-                if (typeMatches(arg, pattern.get(i).getChildren().get(0).getData())) {
+                if (typeMatches(arg, patternTree.get(i).getChildren().get(0).getData())) {
                     i++;
                     j++;
-                } else if (pattern.get(i).getData().equals(optional)) {
+                } else if (patternTree.get(i).getData().equals(optional)) {
                     j++;
                 } else {
                     return false;
@@ -312,18 +308,18 @@ public class CommandManager implements CommandExecutor {
          * @return
          */
         private Node<String> expandNodeGroups() {
-            Node next, current = root;
+            Node<String> next, current = root;
             StringBuilder builder = new StringBuilder();
 
             for (int i = 0; i < pattern.length(); i++) {
                 if (pattern.charAt(i) == required.charAt(0)) {
                     addComplexNode(builder, current);
-                    next = new Node(required);
+                    next = new Node<String>(required);
                     current.connectChild(next);
                     current = next;
                 } else if (pattern.charAt(i) == optional.charAt(0)) {
                     addComplexNode(builder, current);
-                    next = new Node(optional);
+                    next = new Node<String>(optional);
                     current.connectChild(next);
                     current = next;
                 } else if (pattern.charAt(i) == required.charAt(1)) {
@@ -341,7 +337,7 @@ public class CommandManager implements CommandExecutor {
 
         private void addComplexNode(StringBuilder builder, Node<String> current) {
             if (builder.length() > 0) {
-                Node next = new Node(builder.toString());
+                Node<String> next = new Node<String>(builder.toString());
                 builder.delete(0, builder.length());
                 current.connectChild(next);
                 expandComplexNode(next);
@@ -361,7 +357,7 @@ public class CommandManager implements CommandExecutor {
          */
         private void expandComplexNode(Node<String> node) {//TODO: review, check that a valid node expansion is produced here.
             String data = node.getData();
-            Node next, current = node.getParent();
+            Node<String> next, current = node.getParent();
             StringBuilder builder = new StringBuilder();
 
             for (int i = 0; i < data.length(); i++) {
@@ -370,7 +366,7 @@ public class CommandManager implements CommandExecutor {
                 for (String operator : operators) {
                     if (data.charAt(i) == operator.charAt(0)) {
                         isOperator = true;
-                        next = new Node(operator);
+                        next = new Node<String>(operator);
 
                         if ((current.getData().equals(exclude) && next.getData().equals(exclude)) || (current.getData().equals(include) && next.getData().equals(include))) {
                             //do nothing
@@ -383,19 +379,15 @@ public class CommandManager implements CommandExecutor {
 
                         for (String type : types) {
                             if (builder.toString().equals(type)) {
-                                Node typeNode = new Node(type);
+                                Node<String> typeNode = new Node<String>(type);
                                 builder.delete(0, builder.length());
-                                if (type.equals(parent)) {
-                                    rootCommand = false;
-                                    break;
-                                }
                                 current.connectChild(typeNode);
                                 break;
                             }
                         }
 
                         if (builder.length() > 0) {
-                            next = new Node(builder.toString());
+                            next = new Node<String>(builder.toString());
                             builder.delete(0, builder.length());
                             current.connectChild(next);
                             expandReferenceNode(next);
@@ -463,24 +455,24 @@ public class CommandManager implements CommandExecutor {
             Class c = o.getClass();
             if (c.equals(String.class)) {
                 String s = (String) o;
-                node.connectChild(new Node(s));
+                node.connectChild(new Node<String>(s));
             } else if (c.equals(Integer.class)) {
                 Integer i = (Integer) o;
-                node.connectChild(new Node(i.toString()));
+                node.connectChild(new Node<String>(i.toString()));
             } else if (c.equals(Double.class)) {
                 Double d = (Double) o;
-                node.connectChild(new Node(d.toString()));
+                node.connectChild(new Node<String>(d.toString()));
             } else if (c.equals(Float.class)) {
                 Float f = (Float) o;
-                node.connectChild(new Node(f.toString()));
+                node.connectChild(new Node<String>(f.toString()));
             } else if (c.equals(Boolean.class)) {
                 Boolean b = (Boolean) o;
                 if (b) {
-                    node.connectChild(new Node("true"));
-                    node.connectChild(new Node("t"));
+                    node.connectChild(new Node<String>(TRUE));
+                    node.connectChild(new Node<String>(T));
                 } else {
-                    node.connectChild(new Node("false"));
-                    node.connectChild(new Node("f"));
+                    node.connectChild(new Node<String>(FALSE));
+                    node.connectChild(new Node<String>(F));
                 }
             } else if (c.equals(List.class)) {
                 List l = (List) o;

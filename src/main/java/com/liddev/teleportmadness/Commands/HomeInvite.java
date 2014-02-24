@@ -4,8 +4,8 @@ import com.liddev.teleportmadness.Invite;
 import com.liddev.teleportmadness.JumpPoint;
 import com.liddev.teleportmadness.LocationHandler;
 import com.liddev.teleportmadness.MadCommand;
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.PlayerData;
+import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,8 +18,8 @@ public class HomeInvite extends MadCommand{
     @Override
     public boolean run(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        PlayerData invitee = DataManager.get().getPlayerData(args[0]);
-        PlayerData inviter = DataManager.get().getPlayerData(player);
+        PlayerData invitee = TeleportMadness.getDataManager().getPlayerData(args[0]);
+        PlayerData inviter = TeleportMadness.getDataManager().getPlayerData(player);
         JumpPoint jump = null;
         if (args.length == 1) {
             jump = LocationHandler.findNearestHome(player);

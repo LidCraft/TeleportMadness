@@ -3,8 +3,8 @@ package com.liddev.teleportmadness.Commands;
 import com.liddev.teleportmadness.JumpPoint;
 import com.liddev.teleportmadness.LocationHandler;
 import com.liddev.teleportmadness.MadCommand;
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.PlayerData;
+import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class HomeAccept extends MadCommand {
     public boolean run(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         Location l = p.getLocation();  //TODO: check if player can teleport from here.
-        PlayerData data = DataManager.get().getPlayerData(p);
+        PlayerData data = TeleportMadness.getDataManager().getPlayerData(p);
         JumpPoint jump = null;
         if (args.length == 0) {
             jump = data.getInvite().getJumpPoint();

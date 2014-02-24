@@ -34,11 +34,9 @@ public class DataManager {
     private JumpPoint serverHome;
     private final String DB_LOC;
     private ODB db = null;
-    private static DataManager d;
 
     public DataManager(TeleportMadness mad) {
         this.mad = mad;
-        d = this;
         DB_LOC = mad.getDataFolder().toString() + File.separator + "TeleportMadness.odb";
         playerDataMap = new HashMap<UUID, PlayerData>();
         worldDataMap = new HashMap<UUID, WorldData>();
@@ -51,7 +49,7 @@ public class DataManager {
             // Open the database
             db = ODBFactory.open(DB_LOC);
         } catch (Exception e) {
-            mad.getLogger().log(Level.SEVERE, "{0} Error opening Database: {1}", new Object[]{mad.dsc.getFullName(), e});
+            mad.getLogger().log(Level.SEVERE, "{0} Error opening Database: {1}", new Object[]{TeleportMadness.getProp().getName(), e});
         }
     }
 
@@ -107,7 +105,7 @@ public class DataManager {
         if (players.size() == 0) {
             return null;
         }
-        return (PlayerData) players.getFirst();
+        return players.getFirst();
     }
 
     public PlayerData getPlayer(UUID uuid) {
@@ -116,7 +114,7 @@ public class DataManager {
         if (players.size() == 0) {
             return null;
         }
-        return (PlayerData) players.getFirst();
+        return players.getFirst();
     }
 
     public void unloadPlayer(Player player) {
@@ -292,9 +290,5 @@ public class DataManager {
 
     public void modifyClaim(Claim claim) {
         //TODO: deal with events on claim modification
-    }
-
-    public static DataManager get() {
-        return d;
     }
 }
