@@ -7,6 +7,7 @@ import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.PlayerData;
 import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -15,8 +16,12 @@ import org.bukkit.entity.Player;
  */
 public class HomeInvite extends MadCommand{
 
+    public HomeInvite(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player player = (Player) sender;
         PlayerData invitee = TeleportMadness.getDataManager().getPlayerData(args[0]);
         PlayerData inviter = TeleportMadness.getDataManager().getPlayerData(player);

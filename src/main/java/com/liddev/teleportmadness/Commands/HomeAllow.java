@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.liddev.teleportmadness.PermissionLevel;
 import com.liddev.teleportmadness.TeleportMadness;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  *
@@ -13,8 +14,12 @@ import com.liddev.teleportmadness.TeleportMadness;
  */
 public class HomeAllow extends MadCommand {
 
+    public HomeAllow(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player player = (Player) sender;
         ClaimData cd = TeleportMadness.getDataManager().getClaimData(player.getLocation());
         //TODO: replace all getOwnerName() api calls to griefprevention with equivalent uuid calls.

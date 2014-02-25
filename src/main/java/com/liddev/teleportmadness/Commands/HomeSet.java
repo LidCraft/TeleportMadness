@@ -12,6 +12,7 @@ import com.liddev.teleportmadness.PlayerData;
 import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -20,8 +21,12 @@ import org.bukkit.entity.Player;
  */
 public class HomeSet extends MadCommand {
 
+    public HomeSet(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player p = (Player) sender;
         if (args.length > 1) {
             p = Bukkit.getServer().getPlayer(args[0]);

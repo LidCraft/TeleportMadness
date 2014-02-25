@@ -6,7 +6,7 @@
 #    unexpected results.
 #
 #  (2) To make a command available at the root level, that is /somecommand you must
-#    exclude the <super> command from the pattern string.
+#    exclude the command from the pattern string.
 #
 
 mad:
@@ -19,7 +19,7 @@ mad:
     console: false
     root: true
     desc:
-    help:
+    use:
     sub:
 #        reload:
 #            alias:
@@ -29,9 +29,8 @@ mad:
 #            class: com.liddev.teleportmadness.Commands.Reload
 #            perm: teleportMadness.reload
 #            console: true
-#			 root: false
 #            desc:
-#            help:
+#            use:
         home:
             alias:
                 - home
@@ -42,232 +41,213 @@ mad:
             console: false
             root: true
             desc:
-            help:
+            use:
             sub:
                 set:
                     alias:
                         - set
                         - add
                         - +
-                    pattern: '<super> <str-home.sub.*.alias>'
+                    pattern: '<str-home.sub.*.alias>'
                     class: com.liddev.teleportmadness.Commands.HomeSet
                     perm: teleportMadness.home.set
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 setother:
                     alias:
                         - set
                         - add
                         - +
-                    pattern: '<super> <str> <str-home.sub.*.alias> [str]'
+                    pattern: '<str> <str-home.sub.*.alias> [str]'
                     class: com.liddev.teleportmadness.Commands.HomeSet
                     perm: teleportMadness.home.set.other
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 remove:
                     alias:
                         - remove
                         - rm
                         - -
-                    pattern: '<super> [str]'
+                    pattern: '[str]'
                     class: com.liddev.teleportmadness.Commands.HomeRemove
                     perm: teleportMadness.home.remove
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 removeother:
                     alias:
                         - remove
                         - rm
                         - -
-                    pattern: '<super> <str> <str>'
+                    pattern: '<str> <str>'
                     class: com.liddev.teleportmadness.Commands.HomeRemove
                     perm: teleportMadness.home.remove.other
                     console: true
-                    root: false
                     desc:
-                    help:
+                    use:
                 default:
                     alias:
                         - default
                         - d
-                    pattern: '<super> <this>'
                     desc:
-                    help:
+                    use:
                     sub:
                         set:
                             alias:
                                 - set
                                 - add
                                 - +
-                            pattern: '<super> [str]'
+                            pattern: '[str]'
                             class: com.liddev.teleportmadness.Commands.HomeDefaultSet
                             perm: teleportMadness.home.default.set
                             console: false
-                            root: false
                             desc:
-                            help:
+                            use:
                         remove:
                             alias:
                                 - remove
                                 - rm
                                 - -
-                            pattern: '<super> <this>'
+                            pattern: '<this>'
                             class: com.liddev.teleportmadness.Commands.HomeDefaultRemove
                             perm: teleportMadness.home.default.remove
                             console: false
-                            root: false
                             desc:
-                            help:
+                            use:
                 trust:
                     alias:
                         - trust
                         - t
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeTrust
                     perm: teleportMadness.home.trust
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 untrust:
                     alias:
                         - untrust
                         - ut
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeUntrust
                     perm: teleportMadness.home.untrust
                     console: false
-                    root: false
+                    
                     desc:
-                    help:
+                    use:
                 allow:
                     alias:
                         - allow
                         - a
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeAllow
                     perm: teleportMadness.home.allow
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 deny:
                     alias:
                         - deny
                         - d
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeDeny
                     perm: teleportMadness.home.deny
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 trusted:
                     alias:
                         - trusted
                         - td
-                    pattern: '<super> <this>'
+                    pattern: '<this>'
                     class: com.liddev.teleportmadness.Commands.HomeTrusted
                     perm: teleportMadness.home.trusted
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 list:
                     alias:
                         - list
                         - ls
                         - l
-                    pattern: '<super> <this>'
+                    pattern: '<this>'
                     class: com.liddev.teleportmadness.Commands.HomeList
                     perm: teleportMadness.home.list
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 listother:
                     alias:
                         - list
                         - ls
                         - l
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeList
                     perm: teleportMadness.home.list.other
                     console: true
-                    root: false
                     desc:
-                    help:
+                    use:
                 show:
                     alias:
                         - show
-                    pattern: '<super> <this>'
+                    pattern: '<this>'
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.show
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 showother:
                     alias:
                         - show
-                    pattern: '<super> <str>'
+                    pattern: '<str>'
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.show.other
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 invite:
                     alias:
                         - invite
                         - i
-                    pattern: '<super> <str> [str]'
+                    pattern: '<str> [str]'
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.invite
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
                 accept:
                     alias:
                         - accept
                         - a
-                    pattern: '<super> [str]'
+                    pattern: '[str]'
                     class: com.liddev.teleportmadness.Commands.HomeShow
                     perm: teleportMadness.home.accept
                     console: false
-                    root: false
                     desc:
-                    help:
+                    use:
 #                world:
 #                    alias:
 #                        - world
 #                        - w
-#                    pattern: '<super> [str]'
+#                    pattern: '[str]'
 #                    class: com.liddev.teleportmadness.Commands.WorldHome
 #                    perm: teleportMadness.home.world
 #                    console: false
-#					 root: false
 #                    desc:
-#                    help:
+#                    use:
 #                    sub:
 #
 #                server:
 #                    alias:
 #                        - server
 #                        - s
-#                    pattern: '<super> [str]'
+#                    pattern: '[str]'
 #                    class: com.liddev.teleportmadness.Commands.ServerHome
 #                    perm: teleportMadness.home.server
 #                    console: false
-#                    root: false
 #                    desc:
-#                    help:
+#                    use:
 #                    sub:
 #

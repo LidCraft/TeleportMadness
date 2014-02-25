@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -16,8 +17,12 @@ import org.bukkit.entity.Player;
  */
 public class HomeList extends MadCommand {
 
+    public HomeList(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player player;
         StringBuilder builder = new StringBuilder();
         if (args.length == 0) {

@@ -3,11 +3,11 @@ package com.liddev.teleportmadness.Commands;
 import com.liddev.teleportmadness.JumpPoint;
 import com.liddev.teleportmadness.LocationHandler;
 import com.liddev.teleportmadness.MadCommand;
-import com.liddev.teleportmadness.DataManager;
 import com.liddev.teleportmadness.PlayerData;
 import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -16,8 +16,12 @@ import org.bukkit.entity.Player;
  */
 public class Home extends MadCommand {
 
+    public Home(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player p = (Player) sender;
         Location l = p.getLocation(); //TODO: test if player can teleport from here.
         PlayerData data = TeleportMadness.getDataManager().getPlayerData(p);

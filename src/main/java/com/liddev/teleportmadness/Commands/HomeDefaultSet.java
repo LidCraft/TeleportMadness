@@ -5,6 +5,7 @@ import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.PlayerData;
 import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -13,8 +14,12 @@ import org.bukkit.entity.Player;
  */
 public class HomeDefaultSet extends MadCommand {
 
+    public HomeDefaultSet(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         Player player = (Player) sender;
         PlayerData data = TeleportMadness.getDataManager().getPlayerData(player);
         JumpPoint home = data.getHome(args[0]);

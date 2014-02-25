@@ -2,6 +2,7 @@ package com.liddev.teleportmadness.Commands;
 
 import com.liddev.teleportmadness.MadCommand;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  *
@@ -9,9 +10,13 @@ import org.bukkit.command.CommandSender;
  */
 public class Mad extends MadCommand{
 
+    public Mad(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean run(CommandSender sender, String alias, String[] args) {
+        return true;
     }
     
 }

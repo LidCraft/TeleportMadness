@@ -4,6 +4,7 @@ import com.liddev.teleportmadness.MadCommand;
 import com.liddev.teleportmadness.PlayerData;
 import com.liddev.teleportmadness.TeleportMadness;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 /**
@@ -12,8 +13,12 @@ import org.bukkit.entity.Player;
  */
 public class HomeRemove extends MadCommand {
 
+    public HomeRemove(ConfigurationSection config) {
+        super(config);
+    }
+
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(CommandSender sender, String alias, String[] args) {
         String player;
         String home;
         PlayerData data;

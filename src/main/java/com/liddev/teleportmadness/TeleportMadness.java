@@ -1,20 +1,10 @@
 package com.liddev.teleportmadness;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.command.Command;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_7_R1.CraftServer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,7 +35,6 @@ public class TeleportMadness extends JavaPlugin {
         }
         getCommand("");
 
-        setupCMap();
         setupManagers();
         setupListeners();
 //TODO: divide plugin into a module for each dependency where possible and only enable the portions which have their dependencies.
@@ -99,22 +88,12 @@ public class TeleportMadness extends JavaPlugin {
         return commandManager;
     }
 
-	public static TeleportMadness getInstance(){
-		return instance;
-	}
-
-	public static PluginDescriptionFile getProp(){
-		return dsc;
-	}
-
-    public void register(List<PluginCommand> commands) {
-        for (PluginCommand command : commands) {
-            register(command);
-        }
+    public static TeleportMadness getInstance() {
+        return instance;
     }
 
-    public void register(PluginCommand command) {
-        cmap.register(dsc.getPrefix(), (Command) command);
+    public static PluginDescriptionFile getProp() {
+        return dsc;
     }
 
     private void clearMemory() {
@@ -130,13 +109,6 @@ public class TeleportMadness extends JavaPlugin {
 
         getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getName()});
         dsc = null;
-    }
-
-    //Allows access to protected command hash in bukkit.  Uses refection similar to:
-    //https://forums.bukkit.org/threads/register-command-without-plugin-yml.112932/#post-1430463
-    //https://forums.bukkit.org/threads/dynamic-registration-of-commands.65786/#post-1033134
-    private void setupCMap() {
-        cmap = ((CraftServer) Bukkit.getServer()).getCommandMap();
     }
 
     private void setupManagers() {
@@ -159,27 +131,5 @@ public class TeleportMadness extends JavaPlugin {
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(claimListener, this);
         getServer().getPluginManager().registerEvents(worldListener, this);
-    }
-
-    public PluginCommand createPluginCommand(String name) {
-        Constructor<PluginCommand> cons;
-        try {
-            cons = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-            cons.setAccessible(true);
-            return cons.newInstance(name, this);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(TeleportMadness.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 }
