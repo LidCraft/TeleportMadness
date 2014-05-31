@@ -1,12 +1,11 @@
 ---
 #This is the command control file for Teleport Madness
 #Notes:
-#  (1) When specifying command patterns the best practice is to place required
-#    arguments first and optional arguments last.  Doing otherwise may produce
-#    unexpected results.
+#  (1) When specifying command patterns place required arguments first and
+#    optional arguments last.  Doing otherwise may produce unexpected results.
 #
-#  (2) To make a command available at the root level, that is /somecommand you must
-#    exclude the command from the pattern string.
+#  (2) To make a command available at the root level, run it by typing 
+#    "/somecommand", set root to true.
 #
 
 mad:
@@ -14,8 +13,8 @@ mad:
         - mad
         - m
     pattern: '[str]'
-    class: com.liddev.teleportmadness.Commands.Mad
-    perm: teleportMadness.mad
+    class: com.liddev.mad.commands.Mad
+    perm: mad.mad
     console: false
     root: true
     desc:
@@ -26,7 +25,7 @@ mad:
 #                - reload
 #                - rl
 #            pattern: '<this>'
-#            class: com.liddev.teleportmadness.Commands.Reload
+#            class: com.liddev.mad.commands.Reload
 #            perm: teleportMadness.reload
 #            console: true
 #            desc:
@@ -36,8 +35,8 @@ mad:
                 - home
                 - h
             pattern: '[str]'
-            class: com.liddev.teleportmadness.Commands.Home
-            perm: teleportMadness.home
+            class: com.liddev.mad.teleport.home.player.commands.Home
+            perm: mad.home.player.home
             console: false
             root: true
             desc:
@@ -49,8 +48,8 @@ mad:
                         - add
                         - +
                     pattern: '<str-home.sub.*.alias>'
-                    class: com.liddev.teleportmadness.Commands.HomeSet
-                    perm: teleportMadness.home.set
+                    class: com.liddev.mad.teleport.home.player.commands.HomeSet
+                    perm: mad.home.player.set
                     console: false
                     desc:
                     use:
@@ -60,8 +59,8 @@ mad:
                         - add
                         - +
                     pattern: '<str> <str-home.sub.*.alias> [str]'
-                    class: com.liddev.teleportmadness.Commands.HomeSet
-                    perm: teleportMadness.home.set.other
+                    class: com.liddev.mad.teleport.home.player.commands.HomeSet
+                    perm: mad.teleport.home.set.other
                     console: false
                     desc:
                     use:
@@ -71,8 +70,8 @@ mad:
                         - rm
                         - -
                     pattern: '[str]'
-                    class: com.liddev.teleportmadness.Commands.HomeRemove
-                    perm: teleportMadness.home.remove
+                    class: com.liddev.mad.teleport.home.player.commands.HomeRemove
+                    perm: mad.teleport.home.remove
                     console: false
                     desc:
                     use:
@@ -82,8 +81,8 @@ mad:
                         - rm
                         - -
                     pattern: '<str> <str>'
-                    class: com.liddev.teleportmadness.Commands.HomeRemove
-                    perm: teleportMadness.home.remove.other
+                    class: com.liddev.mad.teleport.home.player.commands.HomeRemove
+                    perm: mad.teleport.home.remove.other
                     console: true
                     desc:
                     use:
@@ -100,8 +99,8 @@ mad:
                                 - add
                                 - +
                             pattern: '[str]'
-                            class: com.liddev.teleportmadness.Commands.HomeDefaultSet
-                            perm: teleportMadness.home.default.set
+                            class: ccom.liddev.mad.teleport.home.player.commands.HomeDefaultSet
+                            perm: mad.teleport.home.default.set
                             console: false
                             desc:
                             use:
@@ -111,8 +110,8 @@ mad:
                                 - rm
                                 - -
                             pattern: '<this>'
-                            class: com.liddev.teleportmadness.Commands.HomeDefaultRemove
-                            perm: teleportMadness.home.default.remove
+                            class: com.liddev.mad.teleport.home.player.commands.HomeDefaultRemove
+                            perm: mad.teleport.home.default.remove
                             console: false
                             desc:
                             use:
@@ -121,8 +120,8 @@ mad:
                         - trust
                         - t
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeTrust
-                    perm: teleportMadness.home.trust
+                    class: com.liddev.mad.teleport.home.player.commands.HomeTrust
+                    perm: mad.teleport.home.trust
                     console: false
                     desc:
                     use:
@@ -131,8 +130,8 @@ mad:
                         - untrust
                         - ut
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeUntrust
-                    perm: teleportMadness.home.untrust
+                    class: com.liddev.mad.teleport.home.player.commands.HomeUntrust
+                    perm: mad.teleport.home.untrust
                     console: false
                     
                     desc:
@@ -142,8 +141,8 @@ mad:
                         - allow
                         - a
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeAllow
-                    perm: teleportMadness.home.allow
+                    class: com.liddev.mad.teleport.home.player.commands.HomeAllow
+                    perm: mad.teleport.home.allow
                     console: false
                     desc:
                     use:
@@ -152,8 +151,8 @@ mad:
                         - deny
                         - d
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeDeny
-                    perm: teleportMadness.home.deny
+                    class: com.liddev.mad.teleport.home.player.commands.HomeDeny
+                    perm: mad.teleport.home.deny
                     console: false
                     desc:
                     use:
@@ -162,8 +161,8 @@ mad:
                         - trusted
                         - td
                     pattern: '<this>'
-                    class: com.liddev.teleportmadness.Commands.HomeTrusted
-                    perm: teleportMadness.home.trusted
+                    class: com.liddev.mad.teleport.home.player.commands.HomeTrusted
+                    perm: mad.teleport.home.trusted
                     console: false
                     desc:
                     use:
@@ -173,8 +172,8 @@ mad:
                         - ls
                         - l
                     pattern: '<this>'
-                    class: com.liddev.teleportmadness.Commands.HomeList
-                    perm: teleportMadness.home.list
+                    class: com.liddev.mad.teleport.home.player.commands.HomeList
+                    perm: mad.teleport.home.list
                     console: false
                     desc:
                     use:
@@ -184,8 +183,8 @@ mad:
                         - ls
                         - l
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeList
-                    perm: teleportMadness.home.list.other
+                    class: com.liddev.mad.teleport.home.player.commands.HomeList
+                    perm: mad.teleport.home.list.other
                     console: true
                     desc:
                     use:
@@ -193,8 +192,8 @@ mad:
                     alias:
                         - show
                     pattern: '<this>'
-                    class: com.liddev.teleportmadness.Commands.HomeShow
-                    perm: teleportMadness.home.show
+                    class: com.liddev.mad.teleport.home.player.commands.HomeShow
+                    perm: mad.teleport.home.show
                     console: false
                     desc:
                     use:
@@ -202,8 +201,8 @@ mad:
                     alias:
                         - show
                     pattern: '<str>'
-                    class: com.liddev.teleportmadness.Commands.HomeShow
-                    perm: teleportMadness.home.show.other
+                    class: com.liddev.mad.teleport.home.player.commands.HomeShow
+                    perm: mad.teleport.home.show.other
                     console: false
                     desc:
                     use:
@@ -212,8 +211,8 @@ mad:
                         - invite
                         - i
                     pattern: '<str> [str]'
-                    class: com.liddev.teleportmadness.Commands.HomeShow
-                    perm: teleportMadness.home.invite
+                    class: com.liddev.mad.teleport.home.player.commands.HomeShow
+                    perm: mad.teleport.home.invite
                     console: false
                     desc:
                     use:
@@ -222,8 +221,8 @@ mad:
                         - accept
                         - a
                     pattern: '[str]'
-                    class: com.liddev.teleportmadness.Commands.HomeShow
-                    perm: teleportMadness.home.accept
+                    class: com.liddev.mad.teleport.home.player.commands.HomeShow
+                    perm: mad.teleport.home.accept
                     console: false
                     desc:
                     use:
@@ -232,8 +231,8 @@ mad:
 #                        - world
 #                        - w
 #                    pattern: '[str]'
-#                    class: com.liddev.teleportmadness.Commands.WorldHome
-#                    perm: teleportMadness.home.world
+#                    class: com.liddev.mad.teleport.home.world.commands.WorldHome
+#                    perm: mad.teleport.home.world
 #                    console: false
 #                    desc:
 #                    use:
@@ -244,8 +243,8 @@ mad:
 #                        - server
 #                        - s
 #                    pattern: '[str]'
-#                    class: com.liddev.teleportmadness.Commands.ServerHome
-#                    perm: teleportMadness.home.server
+#                    class: com.liddev.mad.teleport.home.server.commands.ServerHome
+#                    perm: mad.teleport.home.server
 #                    console: false
 #                    desc:
 #                    use:

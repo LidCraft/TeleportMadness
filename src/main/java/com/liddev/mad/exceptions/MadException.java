@@ -1,4 +1,4 @@
-package com.liddev.mad.core.exceptions;
+package com.liddev.mad.exceptions;
 
 /**
  *

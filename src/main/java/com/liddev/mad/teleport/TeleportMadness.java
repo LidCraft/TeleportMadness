@@ -80,15 +80,15 @@ public class TeleportMadness extends JavaPlugin {
         return dataManager;
     }
 
-    public static FileManager getFileManager() {
+    public FileManager getFileManager() {
         return fileManager;
     }
 
-    public static CommandManager getCommandManager() {
+    public CommandManager getCommandManager() {
         return commandManager;
     }
 
-    public static PluginDescriptionFile getProp() {
+    public PluginDescriptionFile getProp() {
         return dsc;
     }
 
@@ -116,6 +116,7 @@ public class TeleportMadness extends JavaPlugin {
         fileManager.loadConfig();
 
         commandManager = new CommandManager(this);
+        commandManager.loadCommands(getFileManager().getCommands());
     }
 
     public void setupListeners() {

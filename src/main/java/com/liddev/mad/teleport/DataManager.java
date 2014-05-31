@@ -49,7 +49,7 @@ public class DataManager {
             // Open the database
             db = ODBFactory.open(DB_LOC);
         } catch (Exception e) {
-            mad.getLogger().log(Level.SEVERE, "{0} Error opening Database: {1}", new Object[]{TeleportMadness.getProp().getName(), e});
+            mad.getLogger().log(Level.SEVERE, "{0} Error opening Database: {1}", new Object[]{mad.getProp().getName(), e});
         }
     }
 

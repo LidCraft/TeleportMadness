@@ -1,52 +1,22 @@
 package com.liddev.mad.core;
 
+import com.liddev.mad.exceptions.InvalidPathException;
 import com.liddev.mad.util.Node;
-import com.liddev.mad.core.exceptions.InvalidPathException;
-import com.liddev.mad.teleport.TeleportMadness;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import org.bukkit.configuration.ConfigurationSection;
 
 /**
  *
  * @author Renlar <liddev.com>
  */
+//TODO: make more compatable.  Extend org.bukkit.command.commandMap?
 public class CommandTree {
 
     private final Node<MadCommand> root;
 
-    public CommandTree(ConfigurationSection commands) {
+    public CommandTree() {
         root = new Node<MadCommand>();
-        build(commands, root);
-    }
-
-    /**
-     * Takes an initialized command tree as arguments and loads all mad commands
-     * configured in the commands.yml file by attaching them to the tree.
-     *
-     * @param commands the yaml configFile containing the command structure.
-     * @param commandTree an Initialized Node to attach all subcommands to.
-     */
-    private void build(ConfigurationSection commands, Node<MadCommand> current) {
-        Set<String> keys = commands.getKeys(false);
-
-        for (String key : keys) {
-            ConfigurationSection commandSection = commands.getConfigurationSection(key);
-            Node<MadCommand> command = new Node<MadCommand>(TeleportMadness.getCommandManager().commandFactory(commandSection));
-
-            current.connectChild(command);
-
-            if (commandSection.getBoolean("root")) {
-                root.connectChild(command);
-            }
-
-            if (commandSection.contains("sub")) {
-                ConfigurationSection subCommand = commandSection.getConfigurationSection("sub");
-                build(subCommand, command);
-            }
-        }
     }
 
     public List<MadCommand> getRootCommands() {
@@ -72,7 +42,7 @@ public class CommandTree {
             throw new InvalidPathException("Path: " + Arrays.toString(path) + " was not found unable to initialize command.");
         }else{
             node.connectChild(new Node(command));
-            //TODO: deal with nodes which have the same name as one will be inaccessable.
+            //TODO: deal with nodes which have the same name as existing one making them inaccessable.
         }
     }
     

@@ -13,7 +13,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 // TODO: deal with all parent fields as most of them are not currently set.
 // This means some features of other plugins and bukkit will not work when accessing this plugin.
-// Investigate org.bukkit.command.PluginCommand 
+// Investigate org.bukkit.command.PluginCommand
+
+//TODO: associate with a command map?  similar to how pluginCommands are handled.  
+//make this a wrapper class aroud org.bukkit.command.pluginCommand or eliminate altogehter?
 public class MadCommand extends Command{
 
     private boolean console = false;
