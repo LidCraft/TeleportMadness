@@ -73,12 +73,12 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.3</version>
+            <version>1.7.9-R0.1</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.7.2-R0.3</version>
+            <version>1.7.9-R0.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -95,12 +95,6 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.1</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
   
     <repositories>
@@ -112,11 +106,6 @@
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>GriefPrevention</id>
-            <name>GriefPrevention</name>
-            <url>https://github.com/ryanhamshire/GriefPrevention.git</url>
         </repository>
         <repository>
             <id>OnARandomBox</id>
