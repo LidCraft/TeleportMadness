@@ -116,7 +116,7 @@ public class TeleportMadness extends JavaPlugin {
         fileManager.loadConfig();
 
         commandManager = new CommandManager(this);
-        commandManager.loadCommands(getFileManager().getCommands());
+        commandManager.setup(getFileManager().getCommands());
     }
 
     public void setupListeners() {

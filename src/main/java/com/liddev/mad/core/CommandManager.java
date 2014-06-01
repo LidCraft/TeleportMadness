@@ -2,6 +2,7 @@ package com.liddev.mad.core;
 
 import com.liddev.mad.exceptions.InvalidPathException;
 import com.liddev.mad.teleport.TeleportMadness;
+import com.liddev.mad.util.DynamicClassHelpers;
 import com.liddev.mad.util.Node;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,7 +36,10 @@ public class CommandManager implements CommandExecutor {
         
         mad.getLogger().log(Level.INFO, "Building command structure.");
         commandTree = new CommandTree();
-
+    }
+    
+    public void setup(ConfigurationSection commands){
+        loadCommands(commands);
         mad.getLogger().log(Level.INFO, "Registering commands with bukkit.");
         registerRootCommands(commandTree.getRootCommands());
     }
@@ -110,22 +114,23 @@ public class CommandManager implements CommandExecutor {
         String className = data.getString("class");
         if (!(className == null) && !className.isEmpty()) {
             try {
-                madCommand = (MadCommand) Class.forName(className).newInstance();
+                madCommand = DynamicClassHelpers.instantiate(className, MadCommand.class, 
+                        new Class<?>[]{ConfigurationSection.class},  new Object[]{data});
 
-                madCommand.setDescription(data.getString("desc"));
-                madCommand.setUsage(data.getString("use"));
-                madCommand.setConsole(data.getBoolean("console"));
-                madCommand.setPattern(new CommandPattern(data.getString("pattern"), data));
-                madCommand.setAliases(data.getStringList("alias"));
-                madCommand.setPermission(data.getString("perm"));
                 madCommand.setExecutor(this);
                 return madCommand;
-            } catch (ClassNotFoundException ex) {
-                mad.getLogger().log(Level.SEVERE, "Error: Command class " + data.getString("class") + " was not found, unable to initiate command.  May cause undesired results.", ex);
-            } catch (InstantiationException ex) {
-                mad.getLogger().log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                mad.getLogger().log(Level.SEVERE, null, ex);
+            } catch (IllegalStateException ex) {
+                mad.getLogger().log(Level.SEVERE, "Error setting up command class " + className + ".  May cause undesired results."
+                        + "\nPossible Causes: " 
+                        + "\n\t1) " + className + " does not exist. "
+                        + "\n\t2) " + className + " is not a sub-class of MadCommand."
+                        + "\n\t3) There was a security error while attempting to access the class."
+                        + "\n\t4) One ore more dependencies for " + className + " are missing."
+                        + "\n\t5) One ore more classes required for " + className + " to operate have not been loaded yet."
+                        + "\n\t6) The MadCommand constructor or the CommandManager.commandFactory() have changed independently of eachother."
+                        + "\n\t7) Unknown Java VM error.  The version of java you are running might be incompatable with this program.  Are you running java 6?"
+                        + "\nError Dump:\n"
+                        , ex);
             }
         }
         return null;
@@ -148,7 +153,6 @@ public class CommandManager implements CommandExecutor {
             return false;
         }
         
-        //
         int depth = commandTree.getDepth(currentNode);
         String[] arguments = ArrayUtils.subarray(commandArray, depth + 1, commandArray.length);
         
@@ -170,13 +174,12 @@ public class CommandManager implements CommandExecutor {
     
 
     /**
-     * Takes an initialized command tree as arguments and loads all mad commands
-     * configured in the commands.yml file by attaching them to the tree.
+     * Takes configuration section as argument and loads command in current level
+     * configured in the commands.yml file by adding them to a CommandTree.
      *
      * @param commands the yaml configFile containing the command structure.
      */
     
-    //TODO: fix failure with more than one root level yaml node.
     public void loadCommands(ConfigurationSection commands) {
         Set<String> keys = commands.getKeys(false);
 
@@ -184,7 +187,14 @@ public class CommandManager implements CommandExecutor {
             ConfigurationSection commandSection = commands.getConfigurationSection(key);
             
             MadCommand command = commandFactory(commandSection);
+            if(command == null){
+                continue;
+            }
+            
             String[] path = getCommandPath(commands);
+            mad.getLogger().log(Level.INFO, "Registering command, /{0}{1} with class {2}", 
+                                new Object[]{toCommandString(path), command.getAliases().get(1), command.toString()});
+            
             try{
                 commandTree.addCommand(path, command);
             }catch(InvalidPathException e){
@@ -205,6 +215,14 @@ public class CommandManager implements CommandExecutor {
         }
     }
     
+    public static String toCommandString(String[] path){
+        String command = "";
+        for(String s : path){
+            command += s + " ";
+        }
+        return command;
+    }
+    
     public static String[] getCommandPath(ConfigurationSection commandSection){
         ArrayList<String> path = new ArrayList<String>();
         String[] sectionPath = commandSection.getCurrentPath().split(".");
@@ -218,13 +236,13 @@ public class CommandManager implements CommandExecutor {
     }
 
     private void logInvalidPathException(InvalidPathException e, String[] path, MadCommand command, ConfigurationSection commands) {
-        mad.getLogger().log(Level.SEVERE, "InvalidPathException: Unable to add a command."
+        mad.getLogger().log(Level.SEVERE, "InvalidPathException: Unable to add command, {3}."
             + "\nThis likely means a serious error has occured in the Mad Core."
             + "\nPossible causes:"
             + "\n\t1) A Mad Plugin is misconfigured.  Usualy in its commands.yml file."
             + "\n\t2) The MadCore.jar file is corrupt."
-            + "\n\t3) Another plugin has to accessed or modified this plugin incorrectly."
-            + "\nError Dump:\n{0}\n{1}\n\n{2}\n\n{3}\n\n{4}"
+            + "\n\t3) Another plugin has accessed or modified this plugin incorrectly."
+            + "\nError Dump:\n{0}\n{1}\n\n{2}\n\n{4}"
             , new Object[]{e.getMessage(), e.getStackTrace(), Arrays.toString(path), command.toString(), commands.toString()});
     }
 }

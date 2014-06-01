@@ -27,6 +27,7 @@ public class MadCommand extends Command{
         super(config.getString("name"), config.getString("desc"), config.getString("use"), config.getStringList("alias"));
         console = config.getBoolean("console");
         super.setPermission(config.getString("permission"));
+        setPattern(new CommandPattern(config.getString("pattern"), config));
     }
     
     public MadCommand(String name, String description, String usageMessage, List<String> aliases){

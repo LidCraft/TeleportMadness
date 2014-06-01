@@ -34,9 +34,11 @@ public class CommandTree {
      * @param command, the command instance to add to the tree.
      * @throws InvalidPathException when no matching path is found.
      */
-    //TODO: add a closest match option to prevent unaccessable commands or build parent nodes as necessary.
-    //TODO: deal with commands which have the same name. Overwrite existing? Force prefix?  Currently if a command with the same name as an existing command is added it will be inaccessable.
+    //TODO: to prevent inaccessable commands build parent nodes as necessary.
+    //TODO: deal with commands which have the same name. Overwrite existing? Force prefix? Overwrite only if empty.
+    //      Currently if a command with the same name as an existing command is added it will be inaccessable.
     public void addCommand(String[] path, MadCommand command) throws InvalidPathException {
+        
         Node node = getNode(path, false);
         if(node == null){
             throw new InvalidPathException("Path: " + Arrays.toString(path) + " was not found unable to initialize command.");
@@ -50,7 +52,7 @@ public class CommandTree {
      * 
      * @param path the path through the tree to search for.
      * @param partial return deepest match if full match not found
-     * @return return found Node.  Will either be the deepest match found to path if partial=true or null if not found and partial=false
+     * @return return found Node, either the deepest path match found if partial=true, or null if exact match not found and partial=false
      */
     protected Node getNode(String[] path, boolean partial){
         Node<MadCommand> currentNode = root;
@@ -82,6 +84,20 @@ public class CommandTree {
             depth++;
         }
         return depth;
+    }
+    
+    /**
+     * 
+     * @param node the node to find the path to.
+     * @return name of all parent nodes in top down order with node at the end.
+     */
+    protected String[] getPath(Node node){
+        ArrayList<String> path = new ArrayList<String>();
+        while(node != root){
+            path.add(0, ((MadCommand)node.data()).getAliases().get(0));
+            node = node.getParent();
+        }
+        return (String[])path.toArray();
     }
     
     protected boolean isRootLevel(Node node){

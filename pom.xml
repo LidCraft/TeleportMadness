@@ -73,20 +73,19 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.1</version>
+            <version>1.7.9-R0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.7.9-R0.1</version>
+            <version>1.7.9-R0.2-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>me.ryanhamshire</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>7.7</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/GriefPrevention.jar</systemPath>
+            <version>7.8-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
@@ -99,13 +98,13 @@
   
     <repositories>
         <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+        </repository>
+        <repository>
             <id>dakani</id>
             <name>Dakani Nexus Repo</name>
             <url>http://repo.dakanilabs.com/content/repositories/public</url>
-        </repository>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>OnARandomBox</id>

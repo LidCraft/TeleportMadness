@@ -3,3 +3,6 @@
 /nbproject/
 /target/
 dependency-reduced-pom.xml
+.directory
+.*swp
+~*swp
