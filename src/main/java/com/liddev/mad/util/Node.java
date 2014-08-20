@@ -1,72 +1,76 @@
 package com.liddev.mad.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-/**
- *
- * @author Renlar <liddev.com>
- * @param <T>
- */
-public class Node<T> {
+abstract public class Node<C extends Comparable, T> implements Cloneable {
 
-    private Node<T> parent;
-    private List<Node<T>> children;
-    private final T data;
+  private Node<C, T> parent = null;
+  private C key = null;
+  private T value = null;
 
-    public Node() {
-        this.parent = null;
-        this.data = null;
-    }
+  public Node() {
+  }
 
-    public Node(T data) {
-        this.data = data;
-    }
+  public Node(C key, T value) {
+    this.key = key;
+    this.value = value;
+  }
 
-    public void setParent(Node<T> parent) {
-        this.parent = parent;
-    }
-    
-    public void connectParent(Node<T> parent){
-        parent.addChild(this);
-        setParent(parent);
-    }
+  public Node<C, T> getParent() {
+    return parent;
+  }
 
-    public void addChild(Node<T> child) {
-        this.children.add(child);
-    }
+  public T getValue() {
+    return value;
+  }
 
-    public void connectChild(Node<T> child) {
-        if (children == null) {
-            this.children = new ArrayList<Node<T>>();
-        }
-        addChild(child);
-        child.setParent(this);
-    }
+  public void setValue(T value) {
+    this.value = value;
+  }
 
-    public void removeChild(Node<T> child) {
-        if (children != null) {
-            children.remove(child);
-        }
-    }
+  public C getKey() {
+    return key;
+  }
 
-    public void remove() {
-        this.getParent().removeChild(this);
-    }
+  public void setKey(C key) {
+    this.key = key;
+  }
 
-    public Node<T> getParent() {
-        return parent;
-    }
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
 
-    public List<Node<T>> getChildren() {
-        return children;
-    }
+  protected void setParent(Node<C, T> parent) {
+    this.parent = parent;
+  }
 
-    public T data() {
-        return data;
-    }
+  /**
+   *
+   * @param child
+   * @return the previous child associated with value if one exists null otherwise
+   */
+  public abstract Node<C, T> addChild(Node<C, T> child);
 
-    public boolean hasChildren() {
-        return !(children == null || children.isEmpty());
-    }
+  public abstract void removeChild(final C value);
+
+  public abstract void replace(Node<C, T> node);
+
+  public abstract boolean hasChild(final C value);
+
+  public abstract boolean hasChildren();
+
+  /**
+   * Gets the child associated with a particular value.
+   *
+   * @param value the value corresponding to the desired node.
+   * @return the Node corresponding to value if it exists null otherwise.
+   */
+  public abstract Node<C, T> getChild(final C value);
+
+  public abstract Collection<Node<C, T>> getChildren(final C fromValue, final C toValue);
+
+  public abstract Collection<Node<C, T>> getChildren();
+
+  public abstract Node<C, T> fillNode();
 }

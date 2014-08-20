@@ -14,29 +14,29 @@ import com.onarandombox.MultiverseCore.event.MVWorldDeleteEvent;
  */
 public class WorldListener implements Listener {
 
-    
-    TeleportMadness plugin;
-    public WorldListener(TeleportMadness aThis) {
-        plugin = aThis;
-    }
-    
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onWorldDelete(MVWorldDeleteEvent e) {
-        
-    }
-    
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onWorldInit(WorldInitEvent e){
-        
-    }
-    
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onWorldLoad(WorldLoadEvent e){
-        
-    }
-    
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onWorldUnload(WorldUnloadEvent e){
-        
-    }
+  TeleportMadness plugin;
+
+  public WorldListener(TeleportMadness aThis) {
+    plugin = aThis;
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onWorldDelete(MVWorldDeleteEvent e) {
+
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onWorldInit(WorldInitEvent e) {
+
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onWorldLoad(WorldLoadEvent e) {
+
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onWorldUnload(WorldUnloadEvent e) {
+
+  }
 }

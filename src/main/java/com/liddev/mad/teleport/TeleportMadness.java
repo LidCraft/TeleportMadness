@@ -16,116 +16,116 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class TeleportMadness extends JavaPlugin {
 
-    private static PlayerListener playerListener;
-    private static ClaimListener claimListener;
-    private static WorldListener worldListener;
-    private static DataManager dataManager;
-    private static FileManager fileManager;
-    private static CommandManager commandManager;
-    private static SimpleCommandMap cmap;
+  private static PlayerListener playerListener;
+  private static ClaimListener claimListener;
+  private static WorldListener worldListener;
+  private static DataManager dataManager;
+  private static FileManager fileManager;
+  private static CommandManager commandManager;
+  private static SimpleCommandMap cmap;
 
-    private static PluginDescriptionFile dsc;
+  private static PluginDescriptionFile dsc;
 
-    @Override
-    public void onEnable() {
-        dsc = getDescription();
-        getLogger().log(Level.INFO, "Loading {0}.", new Object[]{dsc.getFullName()});
-        if (!checkDepend()) {
-            return;
-        }
-        getCommand("");
+  @Override
+  public void onEnable() {
+    dsc = getDescription();
+    getLogger().log(Level.INFO, "Loading {0}.", new Object[]{dsc.getFullName()});
+    if (!checkDepend()) {
+      return;
+    }
+    getCommand("");
 
-        setupManagers();
-        setupListeners();
+    setupManagers();
+    setupListeners();
 //TODO: divide plugin into a module for each dependency where possible and only enable the portions which have their dependencies.
 
-        getLogger().log(Level.INFO, "{0}: Load Complete.", new Object[]{dsc.getName()});
+    getLogger().log(Level.INFO, "{0}: Load Complete.", new Object[]{dsc.getName()});
+  }
+
+  @Override
+  public void onDisable() {
+    getLogger().log(Level.INFO, "{0}: Saving data!", new Object[]{dsc.getName()});
+    dataManager.saveAll();
+
+    clearMemory();
+  }
+
+  public boolean checkDepend() {
+    List<String> depends = dsc.getDepend();
+    ArrayList<String> disabled = new ArrayList<String>();
+    for (String s : depends) {
+      if (getServer().getPluginManager().getPlugin(s) == null) {
+        disabled.add(s);
+      }
     }
-
-    @Override
-    public void onDisable() {
-        getLogger().log(Level.INFO, "{0}: Saving data!", new Object[]{dsc.getName()});
-        dataManager.saveAll();
-
-        clearMemory();
+    if (!disabled.isEmpty()) {
+      StringBuilder builder = new StringBuilder();
+      builder.append("These dependencies are required and missing: ");
+      for (String s : disabled) {
+        builder.append(s).append(", ");
+      }
+      builder.append("\n Exiting plugin as can not continue.");
+      getLogger().log(Level.SEVERE, builder.toString());
+      return false;
     }
+    return true;
+  }
 
-    public boolean checkDepend() {
-        List<String> depends = dsc.getDepend();
-        ArrayList<String> disabled = new ArrayList<String>();
-        for (String s : depends) {
-            if (getServer().getPluginManager().getPlugin(s) == null) {
-                disabled.add(s);
-            }
-        }
-        if (!disabled.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("These dependencies are required and missing: ");
-            for (String s : disabled) {
-                builder.append(s).append(", ");
-            }
-            builder.append("\n Exiting plugin as can not continue.");
-            getLogger().log(Level.SEVERE, builder.toString());
-            return false;
-        }
-        return true;
-    }
+  public boolean isInGroup(Player p) {
+    getDatabase().find(PlayerData.class).where().ieq("playerName", p.getName());
+    return true;
+  }
 
-    public boolean isInGroup(Player p) {
-        getDatabase().find(PlayerData.class).where().ieq("playerName", p.getName());
-        return true;
-    }
+  public static DataManager getDataManager() {
+    return dataManager;
+  }
 
-    public static DataManager getDataManager() {
-        return dataManager;
-    }
+  public FileManager getFileManager() {
+    return fileManager;
+  }
 
-    public FileManager getFileManager() {
-        return fileManager;
-    }
+  public CommandManager getCommandManager() {
+    return commandManager;
+  }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
+  public PluginDescriptionFile getProp() {
+    return dsc;
+  }
 
-    public PluginDescriptionFile getProp() {
-        return dsc;
-    }
+  private void clearMemory() {
+    getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getName()});
+    playerListener = null;
+    dataManager.clearMemory();
+    dataManager.closeDatabase();
+    dataManager = null;
+    claimListener = null;
+    playerListener = null;
+    worldListener = null;
 
-    private void clearMemory() {
-        getLogger().log(Level.FINE, "{0}: Clearing Memory.", new Object[]{dsc.getName()});
-        playerListener = null;
-        dataManager.clearMemory();
-        dataManager.closeDatabase();
-        dataManager = null;
-        claimListener = null;
-        playerListener = null;
-        worldListener = null;
+    getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getName()});
+    dsc = null;
+  }
 
-        getLogger().log(Level.INFO, "{0}: Shutdown Complete.", new Object[]{dsc.getName()});
-        dsc = null;
-    }
+  private void setupManagers() {
+    dataManager = new DataManager(this);
+    dataManager.openDatabase();
+    dataManager.loadData();
 
-    private void setupManagers() {
-        dataManager = new DataManager(this);
-        dataManager.openDatabase();
-        dataManager.loadData();
+    fileManager = new FileManager(this);
+    fileManager.loadCommands();
+    fileManager.loadConfig();
 
-        fileManager = new FileManager(this);
-        fileManager.loadCommands();
-        fileManager.loadConfig();
+    commandManager = new CommandManager(this);
+    commandManager.setup(getFileManager().getCommands());
+  }
 
-        commandManager = new CommandManager(this);
-        commandManager.setup(getFileManager().getCommands());
-    }
+  public void setupListeners() {
+    claimListener = new ClaimListener(this);
+    playerListener = new PlayerListener(this);
+    worldListener = new WorldListener(this);
 
-    public void setupListeners() {
-        claimListener = new ClaimListener(this);
-        playerListener = new PlayerListener(this);
-        worldListener = new WorldListener(this);
-
-        getServer().getPluginManager().registerEvents(playerListener, this);
-        getServer().getPluginManager().registerEvents(claimListener, this);
-        getServer().getPluginManager().registerEvents(worldListener, this);
-    }
+    getServer().getPluginManager().registerEvents(playerListener, this);
+    getServer().getPluginManager().registerEvents(claimListener, this);
+    getServer().getPluginManager().registerEvents(worldListener, this);
+  }
 }

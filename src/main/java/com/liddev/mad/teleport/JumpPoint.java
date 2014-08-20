@@ -13,160 +13,160 @@ import org.bukkit.entity.Player;
  */
 public class JumpPoint implements Serializable {
 
-    private long id;
+  private long id;
 
-    private UUID worldUUID;
+  private UUID worldUUID;
 
-    private JumpType type;
+  private JumpType type;
 
-    private PermissionGroup permissionGroup;
+  private PermissionGroup permissionGroup;
 
-    private String name;
+  private String name;
 
-    private String tpDenyMessage;
+  private String tpDenyMessage;
 
-    private String tpAcceptMessage;
+  private String tpAcceptMessage;
 
-    private double x;
+  private double x;
 
-    private double y;
+  private double y;
 
-    private double z;
+  private double z;
 
-    private float pitch;
+  private float pitch;
 
-    private float yaw;
+  private float yaw;
 
-    public JumpPoint(Location loc, String name) {
-        setLocation(loc);
-        this.name = name;
-    }
+  public JumpPoint(Location loc, String name) {
+    setLocation(loc);
+    this.name = name;
+  }
 
-    public JumpPoint(Location loc, String name, JumpType type) {
-        this(loc, name);
-        this.type = type;
-    }
+  public JumpPoint(Location loc, String name, JumpType type) {
+    this(loc, name);
+    this.type = type;
+  }
 
-    public void setType(JumpType type) {
-        this.type = type;
-    }
+  public void setType(JumpType type) {
+    this.type = type;
+  }
 
-    public JumpType getType() {
-        return type;
-    }
+  public JumpType getType() {
+    return type;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getTpDenyMessage() {
-        return tpDenyMessage;
-    }
+  public String getTpDenyMessage() {
+    return tpDenyMessage;
+  }
 
-    public void setTpDenyMessage(String tpDenyMessage) {
-        this.tpDenyMessage = tpDenyMessage;
-    }
+  public void setTpDenyMessage(String tpDenyMessage) {
+    this.tpDenyMessage = tpDenyMessage;
+  }
 
-    public String getTpAcceptMessage() {
-        return tpAcceptMessage;
-    }
+  public String getTpAcceptMessage() {
+    return tpAcceptMessage;
+  }
 
-    public void setTpAcceptMessage(String tpAcceptMessage) {
-        this.tpAcceptMessage = tpAcceptMessage;
-    }
+  public void setTpAcceptMessage(String tpAcceptMessage) {
+    this.tpAcceptMessage = tpAcceptMessage;
+  }
 
-    public UUID getWorldUUID() {
-        return worldUUID;
-    }
+  public UUID getWorldUUID() {
+    return worldUUID;
+  }
 
-    public void setWorldUUID(UUID worldName) {
-        this.worldUUID = worldName;
-    }
-    
-    public void setWorld(World world){
-        this.worldUUID = world.getUID();
-    }
+  public void setWorldUUID(UUID worldName) {
+    this.worldUUID = worldName;
+  }
 
-    public double getX() {
-        return x;
-    }
+  public void setWorld(World world) {
+    this.worldUUID = world.getUID();
+  }
 
-    public void setX(double x) {
-        this.x = x;
-    }
+  public double getX() {
+    return x;
+  }
 
-    public double getY() {
-        return y;
-    }
+  public void setX(double x) {
+    this.x = x;
+  }
 
-    public void setY(double y) {
-        this.y = y;
-    }
+  public double getY() {
+    return y;
+  }
 
-    public double getZ() {
-        return z;
-    }
+  public void setY(double y) {
+    this.y = y;
+  }
 
-    public void setZ(double z) {
-        this.z = z;
-    }
+  public double getZ() {
+    return z;
+  }
 
-    public float getPitch() {
-        return pitch;
-    }
+  public void setZ(double z) {
+    this.z = z;
+  }
 
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
-    }
+  public float getPitch() {
+    return pitch;
+  }
 
-    public float getYaw() {
-        return yaw;
-    }
+  public void setPitch(float pitch) {
+    this.pitch = pitch;
+  }
 
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
+  public float getYaw() {
+    return yaw;
+  }
 
-    public final void setLocation(Location location) {
-        this.worldUUID = location.getWorld().getUID();
-        this.x = location.getX();
-        this.y = location.getY();
-        this.z = location.getZ();
-        this.pitch = location.getPitch();
-        this.yaw = location.getYaw();
-    }
+  public void setYaw(float yaw) {
+    this.yaw = yaw;
+  }
 
-    public Location getLocation() {
-        World world = Bukkit.getServer().getWorld(worldUUID);
-        return new Location(world, x, y, z, yaw, pitch);
-    }
+  public final void setLocation(Location location) {
+    this.worldUUID = location.getWorld().getUID();
+    this.x = location.getX();
+    this.y = location.getY();
+    this.z = location.getZ();
+    this.pitch = location.getPitch();
+    this.yaw = location.getYaw();
+  }
 
-    public long getId() {
-        return id;
-    }
+  public Location getLocation() {
+    World world = Bukkit.getServer().getWorld(worldUUID);
+    return new Location(world, x, y, z, yaw, pitch);
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setPermissionGroup(PermissionGroup permissionGroup) {
-        this.permissionGroup = permissionGroup;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public PermissionGroup getPermissionGroup() {
-        return permissionGroup;
-    }
-    
-    @Override
-    public String toString(){
-        return name + ": " + " X: " + x + " Y: " + y + " Z: " + z;
-    }
+  public void setPermissionGroup(PermissionGroup permissionGroup) {
+    this.permissionGroup = permissionGroup;
+  }
 
-    public String debugString() {
-        return worldUUID + "::" + Bukkit.getServer().getWorld(worldUUID).getName() + ": " + toString() + " Pitch: " + pitch + " Yaw: " + yaw;
-    }
+  public PermissionGroup getPermissionGroup() {
+    return permissionGroup;
+  }
+
+  @Override
+  public String toString() {
+    return name + ": " + " X: " + x + " Y: " + y + " Z: " + z;
+  }
+
+  public String debugString() {
+    return worldUUID + "::" + Bukkit.getServer().getWorld(worldUUID).getName() + ": " + toString() + " Pitch: " + pitch + " Yaw: " + yaw;
+  }
 }

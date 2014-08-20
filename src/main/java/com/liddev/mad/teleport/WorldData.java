@@ -11,93 +11,93 @@ import org.bukkit.World;
  */
 public class WorldData implements Serializable {
 
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private PermissionGroup permissionGroup;
+  private PermissionGroup permissionGroup;
 
-    private ArrayList<JumpPoint> jumpPoints;
-    
-    private JumpPoint worldHome;
-    
-    private int defaultPlayerHomeLimit;
+  private ArrayList<JumpPoint> jumpPoints;
 
-    public JumpPoint getHome(){
-        return worldHome;
-    }
-    
-    public void setHome(JumpPoint defaultHome){
-        this.worldHome = defaultHome;
-    }
+  private JumpPoint worldHome;
 
-    public Long getId() {
-        return id;
-    }
+  private int defaultPlayerHomeLimit;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public JumpPoint getHome() {
+    return worldHome;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setHome(JumpPoint defaultHome) {
+    this.worldHome = defaultHome;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setWorld(World world) {
-        this.name = world.getName();
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public World getWorld() {
-        return Bukkit.getWorld(name);
-    }
+  public String getName() {
+    return name;
+  }
 
-    public PermissionGroup getPermissionGroup() {
-        return permissionGroup;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setPermissionGroup(PermissionGroup permissionGroup) {
-        this.permissionGroup = permissionGroup;
-    }
-    
-    public void setJumpPoints(ArrayList<JumpPoint> jumpPoints){
-        this.jumpPoints = jumpPoints;
-    }
-    
-    public ArrayList<JumpPoint> getJumpPoints(){
-        return jumpPoints;
-    }
-    
-    public void addJumpPoint(JumpPoint home){
-        jumpPoints.add(home);
-    }
-    
-    public JumpPoint getJumpPoint(String name){
-        JumpPoint home = null;
-        for(JumpPoint h : jumpPoints){
-            if(h.getName().equalsIgnoreCase(name)){
-                home = h;
-            }
-        }
-        return home;
-    }
-    
-    public void removeJumpPoint(String name){
-        for(JumpPoint h : jumpPoints){
-            if(h.getName().equalsIgnoreCase(name)){
-                jumpPoints.remove(h);
-            }
-        }
-    }
+  public void setWorld(World world) {
+    this.name = world.getName();
+  }
 
-    public int getDefaultPlayerHomeLimit() {
-        return defaultPlayerHomeLimit;
-    }
+  public World getWorld() {
+    return Bukkit.getWorld(name);
+  }
 
-    public void setDefaultPlayerHomeLimit(int defaultPlayerHomeLimit) {
-        this.defaultPlayerHomeLimit = defaultPlayerHomeLimit;
+  public PermissionGroup getPermissionGroup() {
+    return permissionGroup;
+  }
+
+  public void setPermissionGroup(PermissionGroup permissionGroup) {
+    this.permissionGroup = permissionGroup;
+  }
+
+  public void setJumpPoints(ArrayList<JumpPoint> jumpPoints) {
+    this.jumpPoints = jumpPoints;
+  }
+
+  public ArrayList<JumpPoint> getJumpPoints() {
+    return jumpPoints;
+  }
+
+  public void addJumpPoint(JumpPoint home) {
+    jumpPoints.add(home);
+  }
+
+  public JumpPoint getJumpPoint(String name) {
+    JumpPoint home = null;
+    for (JumpPoint h : jumpPoints) {
+      if (h.getName().equalsIgnoreCase(name)) {
+        home = h;
+      }
     }
+    return home;
+  }
+
+  public void removeJumpPoint(String name) {
+    for (JumpPoint h : jumpPoints) {
+      if (h.getName().equalsIgnoreCase(name)) {
+        jumpPoints.remove(h);
+      }
+    }
+  }
+
+  public int getDefaultPlayerHomeLimit() {
+    return defaultPlayerHomeLimit;
+  }
+
+  public void setDefaultPlayerHomeLimit(int defaultPlayerHomeLimit) {
+    this.defaultPlayerHomeLimit = defaultPlayerHomeLimit;
+  }
 }
